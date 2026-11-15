@@ -598,7 +598,14 @@ klibs.io 从 Maven Central 与 GitHub 自动抓取，无需提交元数据文件
   任务为 `dokkaGeneratePublicationHtml`（2.x 已移除旧的 `dokkaHtmlMultiModule`）。
 - `.github/workflows/pages.yml` 只有 `workflow_dispatch`：站点更新在内容值得上线后手动执行
   `gh workflow run pages.yml`（或 Actions 页面点 Run workflow）。它每次都重新跑 `pagesSite`，所以线上
-  内容始终对应触发时 `master` 的提交。仓库 Settings → Pages 的 Source 必须选 **GitHub Actions**。
+  内容始终对应触发时 `main` 的提交。仓库 Pages 的 Source 用 CLI 开启（不用手点 Settings）：
+
+  ```powershell
+  gh api -X POST repos/shijianjs/ktjs-vtable/pages -f build_type=workflow
+  ```
+
+  `build_type=workflow` 就是 GitHub Actions 源；已开启时该调用报 409，改用
+  `gh api -X PUT repos/shijianjs/ktjs-vtable/pages -f build_type=workflow`。
 - 本地预览：执行 `./gradlew pagesSite` 后给 `build/pages` 起任意静态服务器。直接开 `file://` 会因相对
   路径与 CORS 导致资源加载异常。
 

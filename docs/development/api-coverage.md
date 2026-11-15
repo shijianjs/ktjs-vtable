@@ -13,9 +13,9 @@
 | 状态 | 数量 |
 |---|---:|
 | 总计 | 27 |
-| 已完成 | 13 |
+| 已完成 | 16 |
 | 明确不做 | 3 |
-| 待完成 | 11 |
+| 待完成 | 8 |
 
 `总数 = 已完成 + 明确不做 + 待完成`
 
@@ -41,9 +41,9 @@
 |---|---|---|
 | `scripts/generate-api.py` 可重跑 | 已完成 | 读两个包的 `.d.ts`，输出 138 个 Kotlin 文件；规则与理由见 [technical-decisions.md](technical-decisions.md) |
 | Kotlin/JS 编译通过 | 已完成 | `:ktjs-vtable:compileKotlinJs` BUILD SUCCESSFUL（仅剩 inline 性能提示） |
-| detekt + 浏览器测试（`./gradlew check`） | 待完成 | 生成声明还没有冒烟测试；detekt 会在 `check` 里一起跑 |
+| detekt + 浏览器测试（`./gradlew check`） | 已完成 | `check` 通过；`VTableTest` 6 个用例在 Chromium 里造真实表格（列表、分组、主题、字面量、编辑器注册、透视表） |
 | API surface 报告 | 已完成 | [api-surface-report.md](api-surface-report.md)，随生成脚本更新 |
-| 生成脚本默认读 `node_modules` | 待完成 | 本地先用解包的 tarball 校验；接 CI 前要确认 `node_modules` 路径与锁文件一致后再改默认参数 |
+| 生成脚本默认读 `node_modules` | 已完成 | 已验证 `build/js/node_modules/@visactor/vtable/es` 与 `...-editors/es` 可用，重跑结果与提交的声明一致 |
 
 ## 3. Demo（7）
 
@@ -64,7 +64,7 @@
 | intro / getting-started（中英） | 已完成 | 站点根路径 `/` + `/zh-Hans/` |
 | 列 / 透视表 / 主题与编辑器（中英） | 已完成 | 构造选项、列定义、记录、主题、编辑器、事件 |
 | 开发 / 包覆盖（中英） | 已完成 | 生成声明怎么读、哪些是 `JsAny`、包边界与进度口径 |
-| Pages 站点与 demo / API 跳转 | 待完成 | `pagesSite` 产出 `demo/` + `api/`，导航栏与页脚已接；还差用 `gh api` 开启 Pages（build_type=workflow）并跑一次 `pages.yml` |
+| Pages 站点与 demo / API 跳转 | 已完成 | `gh api` 以 `build_type=workflow` 开启 Pages，`pages.yml` 部署成功；`/`、`/demo/`、`/api/`、`/zh-Hans/` 均返回 200 |
 
 ## 已完成明细（不重复列名）
 
