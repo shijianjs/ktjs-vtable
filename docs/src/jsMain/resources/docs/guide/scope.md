@@ -13,7 +13,7 @@ checklist; the live version with per-item details is
 
 | Package | Kotlin home | Notes |
 | --- | --- | --- |
-| `@visactor/vtable` | `io.github.shijianjs.ktjs.vtable` | `ListTable`, `PivotTable`, `PivotChart`, events, themes, `register`. 445 reachable declarations, 138 files |
+| `@visactor/vtable` | `io.github.shijianjs.ktjs.vtable` | `ListTable`, `PivotTable`, `PivotChart`, events, themes, `register`. 444 reachable declarations, 138 files |
 | `@visactor/vtable-editors` | same package | `InputEditor`, `TextAreaEditor`, `DatePickerEditor`; imports the package root because upstream exports only `.` |
 
 Both packages share one Gradle module and one Kotlin package: they share an upstream version and a

@@ -23,7 +23,7 @@
 
 | 包 | 状态 | 说明 |
 |---|---|---|
-| `@visactor/vtable` | 已完成 | 主体：`ListTable` / `PivotTable` / `PivotChart` 及其构造选项、主题、事件、工具函数；445 条可达声明、138 个 Kotlin 文件，`:ktjs-vtable:compileKotlinJs` 通过 |
+| `@visactor/vtable` | 已完成 | 主体：`ListTable` / `PivotTable` / `PivotChart` 及其构造选项、主题、事件、工具函数；444 条可达声明、138 个 Kotlin 文件，`:ktjs-vtable:compileKotlinJs` 通过 |
 | `@visactor/vtable-editors` | 已完成 | `InputEditor` / `TextAreaEditor` / `DateInputEditor`；从包根导入（上游 `exports` 只暴露 `.`），编辑器注册已在 demo 验证 |
 | `@visactor/vtable-export` | 待完成 | CSV / Excel 导出，依赖 `exceljs`；需要生成器支持第二个 npm 依赖 |
 | `@visactor/vtable-search` | 待完成 | 表内搜索组件，自带面板 DOM，需要生成 + 演示 |

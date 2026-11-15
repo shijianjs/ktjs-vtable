@@ -12,7 +12,7 @@ title: 包覆盖
 
 | 包 | Kotlin 包 | 说明 |
 | --- | --- | --- |
-| `@visactor/vtable` | `io.github.shijianjs.ktjs.vtable` | `ListTable`、`PivotTable`、`PivotChart`、事件、主题、`register`。445 个可达声明、138 个文件 |
+| `@visactor/vtable` | `io.github.shijianjs.ktjs.vtable` | `ListTable`、`PivotTable`、`PivotChart`、事件、主题、`register`。444 个可达声明、138 个文件 |
 | `@visactor/vtable-editors` | 同一个包 | `InputEditor`、`TextAreaEditor`、`DatePickerEditor`；上游只导出 `.`，所以从包根导入 |
 
 两个包共用一个 Gradle 模块和一个 Kotlin 包：上游版本和发版节奏一致，拆开只会让每次发布多一个 Maven 版本。

@@ -26,7 +26,7 @@ python scripts/generate-api.py \
 | `--out` | 输出目录，默认 `ktjs-vtable/src/jsMain/kotlin/io/github/shijianjs/ktjs/vtable` |
 | `--report` | 报告位置，默认 `docs/development/api-surface-report.md` |
 
-当前产出：445 个可达声明、277 个导出名、138 个 Kotlin 文件。报告列出无法直接表达的声明（索引签名、
+当前产出：444 个可达声明、277 个导出名、138 个 Kotlin 文件。报告列出无法直接表达的声明（索引签名、
 交叉类型、未解析引用），让缺口是可见的而不是藏起来的。
 
 ## 生成器遵循的规则

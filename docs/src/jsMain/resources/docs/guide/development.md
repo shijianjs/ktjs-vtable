@@ -27,7 +27,7 @@ python scripts/generate-api.py \
 | `--out` | output directory, default `ktjs-vtable/src/jsMain/kotlin/io/github/shijianjs/ktjs/vtable` |
 | `--report` | where the surface report goes, default `docs/development/api-surface-report.md` |
 
-Current output: 445 reachable declarations, 277 exported names, 138 Kotlin files. The report lists the
+Current output: 444 reachable declarations, 277 exported names, 138 Kotlin files. The report lists the
 declarations that could not be expressed directly (index signatures, intersections, unresolved
 references) so the gap is visible instead of hidden.
 
