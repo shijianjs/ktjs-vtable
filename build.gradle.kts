@@ -23,8 +23,10 @@ val versionSuffix =
 extra["versionSuffix"] = versionSuffix
 
 // Every publishable module shares the prefix, which is also how publishing, Dokka and the version
-// report find them. Keep it in sync with the module directories and settings.gradle.kts.
-val publishedPrefix = "ktjs-wrapper-template-"
+// report find them. Keep it in sync with the module directories and settings.gradle.kts. The module
+// itself is `ktjs-vtable`, so the prefix has no trailing dash: it also matches sub-modules such as
+// `ktjs-vtable-gantt`.
+val publishedPrefix = "ktjs-vtable"
 
 // Dokka aggregates every published module into one API reference. `demo` is not part of the
 // published API surface, so it is excluded by the prefix filter.
@@ -36,7 +38,7 @@ dependencies {
 
 dokka {
     dokkaPublications.html {
-        moduleName.set("ktjs-wrapper-template")
+        moduleName.set("ktjs-vtable")
         outputDirectory.set(layout.buildDirectory.dir("dokka/html"))
     }
 }
@@ -136,16 +138,16 @@ subprojects {
             name.set(module.name)
             description.set(
                 module.provider {
-                    module.description ?: "Kotlin/JS wrapper for ktjs-wrapper-template."
+                    module.description ?: "Kotlin/JS wrapper for ktjs-vtable."
                 }
             )
-            url.set("https://github.com/shijianjs/ktjs-wrapper-template")
+            url.set("https://github.com/shijianjs/ktjs-vtable")
             inceptionYear.set("2026")
 
             licenses {
                 license {
                     name.set("MIT License")
-                    url.set("https://github.com/shijianjs/ktjs-wrapper-template/blob/master/LICENSE")
+                    url.set("https://github.com/shijianjs/ktjs-vtable/blob/master/LICENSE")
                 }
             }
 
@@ -158,9 +160,9 @@ subprojects {
             }
 
             scm {
-                url.set("https://github.com/shijianjs/ktjs-wrapper-template")
-                connection.set("scm:git:git://github.com/shijianjs/ktjs-wrapper-template.git")
-                developerConnection.set("scm:git:ssh://git@github.com/shijianjs/ktjs-wrapper-template.git")
+                url.set("https://github.com/shijianjs/ktjs-vtable")
+                connection.set("scm:git:git://github.com/shijianjs/ktjs-vtable.git")
+                developerConnection.set("scm:git:ssh://git@github.com/shijianjs/ktjs-vtable.git")
             }
         }
     }

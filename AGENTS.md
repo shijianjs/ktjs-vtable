@@ -17,17 +17,32 @@
 
 ## 项目概况与模块结构
 
-`ktjs-wrapper-template` 为 [`@vaadin/button`](https://www.npmjs.com/package/@vaadin/button) 提供 Kotlin/JS
-wrapper。**本仓库自己就是模板，也是一个能立刻跑的项目**：没有占位符，没有初始化脚本，复制改名即可用
-（`git clone` / GitHub 的 Use this template）。`README.md` 与站点的「派生新项目」页是改名清单。
+`ktjs-vtable` 为 [VisActor VTable](https://github.com/VisActor/VTable) 的开源（MIT）部分提供 Kotlin/JS
+wrapper：`@visactor/vtable`（表格主体）与 `@visactor/vtable-editors`（单元格编辑器）。只封装开源免费包；
+React / Vue / OpenInula 绑定明确不做。类型声明由上游自己的 `.d.ts` 生成（`scripts/generate-api.py`），
+日常构造走手写薄 DSL（`.../vtable/dsl/`）。
 
-- `ktjs-wrapper-template-core`：发布模块，也是示例模块（一个 npm 包、一个 Gradle 模块、一个 Kotlin 包）。
+- 生成目录 `ktjs-vtable/src/jsMain/kotlin/io/github/shijianjs/ktjs/vtable/` 禁止手改：生成器每次先删掉
+  那里的全部 `*.kt`。手写代码放 `dsl/` 子包。
+- 上游版本统一在根 `package.json`；`ktjs-vtable/build.gradle.kts` 的 `upstreamVersion` / `editorsVersion`
+  从那里读。版本形如 `1.26.8-kt.1`。
+- 重新生成：
+
+  ```powershell
+  python scripts/generate-api.py --types build/js/node_modules/@visactor/vtable/es `
+      --editors-types build/js/node_modules/@visactor/vtable-editors/es --emit
+  ```
+
+  规则与理由见 `docs/development/technical-decisions.md`，生成结果的缺口见
+  `docs/development/api-surface-report.md`。
+
+- `ktjs-vtable`：发布模块，也是示例模块（一个 npm 包、一个 Gradle 模块、一个 Kotlin 包）。
   `version = {上游 npm 版本}-kt.{修订号}`。
 - `demo`：演示页，发布在 Pages 的 `/demo/`，不发布到 Maven、也不进入 Dokka。
 - `docs`：文档站，也是 Pages 的主体。它同样是 Kotlin/JS 模块——站点配置与侧边栏是 Kotlin、页面是
   Markdown，由 [ktjs-docusaurus](https://github.com/shijianjs/ktjs-docusaurus) 的 Gradle 插件组装并调用
   Docusaurus CLI。`pagesSite` 把它放在 Pages **根目录**，demo 在 `/demo/`、API 在 `/api/`：`baseUrl`
-  （`/ktjs-wrapper-template/`）和导航里那两个跳转都由 `Config.kt` 顶部的常量推出来，改布局要一起改。
+  （`/ktjs-vtable/`）和导航里那两个跳转都由 `Config.kt` 顶部的常量推出来，改布局要一起改。
   不发布、也不进 Dokka。版本在 `gradle.properties`：`ktjs-docusaurus.version` 是 wrapper klib 的，
   `ktjs-docusaurus-gradle-plugin.version` 是插件的，`ktjs-docusaurus-kit.version` 是工具箱的（那个项目每个
   模块各有 `-kt.N` 修订号）；写 SNAPSHOT 时从 `mavenLocal` 解析。首页的 `<ktjs-hero>` / `<ktjs-features>` /
@@ -38,12 +53,23 @@ wrapper。**本仓库自己就是模板，也是一个能立刻跑的项目**：
   Logo 只有一份（`docs/src/jsMain/resources/static/img/`），demo 用 `brandAssets` 任务拷进自己的资源。
 
 Kotlin 包名统一以账号的 GitHub Pages 域名倒写为前缀：`io.github.<owner>.ktjs.<name>`。不要用裸根包
-（`vaadin`、`echarts`、`iconify` 之类），否则项目间以及与其他库容易在同一 classpath 上撞包。新增模块时
-沿用该前缀，再按 npm 包加子包（如 `io.github.shijianjs.ktjs.vaadin.combobox`）。
+（`vtable`、`echarts`、`iconify` 之类），否则项目间以及与其他库容易在同一 classpath 上撞包。新增模块时
+沿用该前缀，再按 npm 包加子包（如 `io.github.shijianjs.ktjs.vtable.gantt`）。
 
 按「上游发版节奏」而不是「npm 包数量」划分子模块：上游版本号相同、总是一起发版的包放在同一个 Gradle
 模块里，避免每个包都产生一个 Maven 版本和一次 Central 发布。终端应用打包时本来就会摇树，模块内多出的
 声明不会进入最终产物。
+
+### 长期任务跟踪
+
+本仓库的封装范围跨多个会话，按 [`.agents/skills/long-task-tracking/`](.agents/skills/long-task-tracking/SKILL.md)
+组织进度（开始工作先读它，再按它第 4 节的顺序恢复状态）：
+
+- 根目录 `TODO.md` 只放目标、总数统计、当前待办与注意事项，不放大清单。
+- 明细清单在 `docs/development/`：`api-coverage.md`（按 npm 包 + 生成质量 + demo + 文档分组的逐项状态）、
+  `api-surface-report.md`（生成器输出，不手改）、`technical-decisions.md`（生成器规则与理由）。
+- 三种状态：已完成 / 明确不做（必须写具体理由）/ 待完成；任何时刻 `总数 = 已完成 + 明确不做 + 待完成`。
+- 每完成一批就把统计与明细一起改；没有验证过的实现不能标已完成。用户要求「自动提交」时，随进度一起提交。
 
 ### 上游 API 建模约定
 
@@ -119,13 +145,13 @@ wrapper 的目标是让上游 npm 包暴露的公开 API 在 Kotlin/JS 侧都能
 
 ### 新增模块
 
-模板没有骨架目录，`ktjs-wrapper-template-core` 就是骨架：复制整个模块目录，再把它改成新的名字与包。
+模板没有骨架目录，`ktjs-vtable` 就是骨架：复制整个模块目录，再把它改成新的名字与包。
 
-1. 复制 `ktjs-wrapper-template-core` 为 `ktjs-wrapper-template-<name>`，改 `build.gradle.kts` 里的
+1. 复制 `ktjs-vtable` 为 `ktjs-vtable-<name>`，改 `build.gradle.kts` 里的
    `npmVersions.getValue("<包名>")` 与 `description`，以及 `src/*/kotlin` 下的包路径与 `package` 行。
-2. `settings.gradle.kts` 加 `include(":ktjs-wrapper-template-<name>")`。
-3. `package.json` 的 `dependencies` 加 npm 包版本；`wrapper-revisions.properties` 加 `ktjs-wrapper-template-<name>=1`。
-4. `demo/build.gradle.kts` 的 `jsMain.dependencies` 加 `implementation(project(":ktjs-wrapper-template-<name>"))`，
+2. `settings.gradle.kts` 加 `include(":ktjs-vtable-<name>")`。
+3. `package.json` 的 `dependencies` 加 npm 包版本；`wrapper-revisions.properties` 加 `ktjs-vtable-<name>=1`。
+4. `demo/build.gradle.kts` 的 `jsMain.dependencies` 加 `implementation(project(":ktjs-vtable-<name>"))`，
    并在 demo 里实际使用它。
 5. 同步检查 Dependabot 分组（`.github/dependabot.yml` 的 `upstream` patterns）、README 模块表与站点页面；
    Dokka 按 `publishedPrefix` 自动收集，无需改。
@@ -482,7 +508,7 @@ group 固定为 `io.github.shijianjs`。`subprojects` 的 group 必须单独设�
 
 ```bash
 gh workflow run release.yml -f release=release-1 \
-  -f modules=ktjs-wrapper-template-core
+  -f modules=ktjs-vtable
 ```
 
 - `release`：`release-<数字>`，tag 由工作流创建；工作流不会移动已有 tag。
@@ -516,10 +542,10 @@ gh workflow run release.yml -f release=release-1 \
 ```bash
 ORG_GRADLE_PROJECT_signingInMemoryKey="$(< ~/central-signing-key.txt)" \
 ORG_GRADLE_PROJECT_signingInMemoryKeyPassword=... \
-./gradlew :ktjs-wrapper-template-core:publishAllPublicationsToHubStagingRepository
+./gradlew :ktjs-vtable:publishAllPublicationsToHubStagingRepository
 
-python3 scripts/hub-release.py --project shijianjs/ktjs-wrapper-template --release release-1 \
-  --module ktjs-wrapper-template-core=<version> --repository . \
+python3 scripts/hub-release.py --project shijianjs/ktjs-vtable --release release-1 \
+  --module ktjs-vtable=<version> --repository . \
   --archives build/hub-release/archives --registrations build/hub-release
 ```
 
@@ -547,7 +573,7 @@ klibs.io 从 Maven Central 与 GitHub 自动抓取，无需提交元数据文件
 ## 演示页面与 GitHub Pages
 
 - `demo` 只消费公共 API，不发布、也不进入 Dokka。根 `build.gradle.kts` 的发布与 Dokka 配置按
-  `ktjs-wrapper-template-` 前缀过滤子模块，新增非发布模块时沿用该约定。
+  `ktjs-vtable-` 前缀过滤子模块，新增非发布模块时沿用该约定。
 - 根 `package.json` 的 `browserslist` 是构建必需项，不是装饰：Babel 从生成的站点目录往上找到它才有编译
   目标。没有它 `@babel/preset-env` 按 ES5 处理，`async/await` 被翻成 regenerator 状态机，
   `@docusaurus/theme-mermaid` 里 `if (__DOCUSAURUS_MERMAID_LAYOUT_ELK_ENABLED__)` 这个守卫就不再是死代码，
@@ -586,8 +612,8 @@ klibs.io 从 Maven Central 与 GitHub 自动抓取，无需提交元数据文件
 
 ## 模板同步与升级
 
-本文件同时是 [`shijianjs/ktjs-wrapper-template`](https://github.com/shijianjs/ktjs-wrapper-template) 的
-`AGENTS.md`：那份是本仓库的（示例模块 `ktjs-wrapper-template-core` 包 `@vaadin/button`），派生项目把项目名、
+本文件同时是 [`shijianjs/ktjs-vtable`](https://github.com/shijianjs/ktjs-vtable) 的
+`AGENTS.md`：那份是本仓库的（示例模块 `ktjs-vtable` 包 `@vaadin/button`），派生项目把项目名、
 包名、模块名换掉，通用约定原样保留。
 
 - 在派生项目里总结出对所有 wrapper 项目都成立的约定（构建、测试、发布、DOM/UI 约定、上游 API 建模等）

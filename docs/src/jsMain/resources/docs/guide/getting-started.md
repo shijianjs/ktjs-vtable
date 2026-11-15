@@ -1,5 +1,6 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
+title: Getting started
 ---
 
 # Getting started
@@ -11,11 +12,71 @@ sidebar_position: 1
   to remember, and `kotlin.js.yarn=false` keeps npm as the package manager.
 - Chromium is downloaded by Playwright the first time a browser test runs.
 
+## Install
+
+```kotlin
+dependencies {
+    implementation("io.github.shijianjs:ktjs-vtable:1.26.8-kt.1")
+}
+```
+
+The module declares `@visactor/vtable` and `@visactor/vtable-editors` as npm dependencies, so a
+consumer does not add them separately. Both are MIT-licensed; nothing else from VTable is pulled in.
+
+## A first table
+
+```kotlin
+import io.github.shijianjs.ktjs.vtable.ListTable
+import io.github.shijianjs.ktjs.vtable.StandardOrAdaptiveOrAutoWidths
+import io.github.shijianjs.ktjs.vtable.dsl.*
+import web.cssom.ClassName
+import web.dom.document
+import web.html.HtmlTagName
+
+fun main() {
+    val container = document.createElement(HtmlTagName.div).apply {
+        className = ClassName("table-host")
+    }
+    document.body.append(container)
+
+    ListTable(container, listTableOptions {
+        columns(
+            textColumn("name", "Name", 150.0),
+            textColumn("role", "Role", 160.0),
+            textColumn("city", "City", 130.0),
+        )
+        records(
+            row("name" to "Ada Lovelace", "role" to "Analytical engine", "city" to "London"),
+            row("name" to "Grace Hopper", "role" to "Compiler", "city" to "New York"),
+        )
+        frozenColCount = 1.0
+        widthMode = StandardOrAdaptiveOrAutoWidths.adaptive
+    })
+}
+```
+
+The size comes from CSS, because the element must be sized before the table is constructed:
+
+```css
+.table-host {
+    width: 100%;
+    height: 460px;
+}
+```
+
+Two details matter:
+
+- **The container needs a size before the table is constructed.** VTable measures its container; a
+  zero-height element produces a zero-height canvas. `ListTable` appends its own `<div>` and `<canvas>`
+  inside the element you pass.
+- **`ListTable(options)` also works** when the options object carries `container`. The two-argument form
+  is the one the demo uses.
+
 ## Build, test, publish
 
 ```bash
 ./gradlew build                    # compile, Detekt, browser tests
-./gradlew :ktjs-wrapper-template-core:jsBrowserTest
+./gradlew :ktjs-vtable:jsBrowserTest
 ./gradlew :demo:e2eTest            # Playwright against the bundled demo page
 ./gradlew :docs:docusaurusBuild    # the documentation site
 ./gradlew pagesSite                # documentation at /, demo at /demo/, Dokka at /api/
@@ -31,20 +92,8 @@ are part of CI as separate steps.
 ./gradlew :demo:jsBrowserRun       # dev server for the demo page
 ```
 
-Docusaurus watches the site directory, so Markdown edits reload; Kotlin changes need
-`./gradlew :docs:docusaurusSite` first, because the site imports the compiled module.
-
-## Where things live
-
-| Path | Contents |
-| --- | --- |
-| `package.json` | the only place npm versions are declared (Dependabot maintains it) |
-| `wrapper-revisions.properties` | per-module `-kt.N` revision |
-| `ktjs-wrapper-template-core/src/jsMain/kotlin` | the wrapper declarations |
-| `ktjs-wrapper-template-core/src/jsTest/kotlin` | browser tests for them |
-| `demo/src/jsMain` | the demo page and its Kotlin entry point |
-| `docs/src/jsMain/kotlin` | the site configuration and sidebar |
-| `docs/src/jsMain/resources` | Markdown pages, MDX landing page, CSS, translations |
+Docusaurus watches the site directory, so Markdown edits reload; Kotlin changes need a first
+`./gradlew :docs:docusaurusSite`, because the site imports the compiled module.
 
 ## The lock file
 

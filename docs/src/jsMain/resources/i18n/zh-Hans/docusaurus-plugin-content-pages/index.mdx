@@ -1,47 +1,53 @@
 ---
-title: ktjs-wrapper-template
-description: 一个立刻能跑的 Kotlin/JS wrapper 项目
+title: ktjs-vtable
+description: VisActor VTable 开源部分的 Kotlin/JS 封装
 hide_table_of_contents: true
 ---
 
-import logo from '@site/static/img/ktjs-wrapper-template-logo.png';
+import logo from '@site/static/img/ktjs-vtable-logo.png';
 
 {/* `<ktjs-…>` 分区来自 ktjs-docusaurus 的工具箱：Gradle 插件把它的 bundle 放到 `static/ktjs-client/`，
     `ClientModule.kt` 在页面 hydrate 之后加载它。`href` 写成相对路径，两种 locale 前缀下都能用；
     `logo` 用 import 取，这样 URL 会带上本站实际的 `baseUrl`。 */}
 
-<ktjs-hero logo-src={logo} title="ktjs-wrapper-template" tagline="一个可以照抄的 Kotlin/JS wrapper 项目">
+<ktjs-hero logo-src={logo} title="ktjs-vtable" tagline="用上游声明生成的 Kotlin/JS 版 VisActor VTable">
 
-<ktjs-action kind="primary" href="intro">开始阅读</ktjs-action>
+<ktjs-action kind="primary" href="guide/getting-started">开始阅读</ktjs-action>
 
-<ktjs-action kind="secondary" href="https://github.com/shijianjs/ktjs-wrapper-template" icon="simple-icons:github">GitHub</ktjs-action>
+<ktjs-action kind="secondary" href="https://github.com/shijianjs/ktjs-vtable" icon="simple-icons:github">GitHub</ktjs-action>
+
+<ktjs-action kind="secondary" href="https://shijianjs.github.io/ktjs-vtable/demo/" icon="lucide:play">在线演示</ktjs-action>
 
 </ktjs-hero>
 
-<ktjs-features section-title="为什么从这里开始" tinted>
+<ktjs-features section-title="封装给了你什么" tinted>
 
-<ktjs-feature icon="lucide:play" title="拿来就能跑">克隆下来就是一个能构建、能测试、能部署的项目——第一次 `./gradlew build` 之前没有任何占位符要填。</ktjs-feature>
+<ktjs-feature icon="lucide:table-2" title="Canvas 表格，Kotlin 类型">`ListTable` 与 `PivotTable` 的列、记录、事件、主题都按 `@visactor/vtable` 自己的 `.d.ts` 生成。</ktjs-feature>
 
-<ktjs-feature icon="lucide:package" title="一个包一个模块">一个 wrapper 模块把一个 npm 包映射成一个 Kotlin 包。加第二个包就是复制一个目录，不用重新设计结构。</ktjs-feature>
+<ktjs-feature icon="lucide:edit-3" title="编辑器也在">`@visactor/vtable-editors` 在同一个模块里，单元格编辑不需要第二个依赖。</ktjs-feature>
 
-<ktjs-feature icon="lucide:shield-check" title="类型而不是 dynamic">上游 `.d.ts` 写成 `external` 声明，编译期就能查；公开面用 `kotlin-browser` 的 `web.*` 类型，能和其他 wrapper 组合。</ktjs-feature>
+<ktjs-feature icon="lucide:shield-check" title="检查过，而不是 dynamic">上游声明的每个成员都有 Kotlin 类型；联合类型与字符串字面量保留各自的工厂和常量对象。</ktjs-feature>
 
-<ktjs-feature icon="lucide:flask-conical" title="在浏览器里测">模块的测试跑在 Chromium 里、打的是真实自定义元素，demo 还有自己的 Playwright 套件，两者都接进了 CI。</ktjs-feature>
+<ktjs-feature icon="lucide:wrench" title="常见用法有 DSL">列和行都是一行代码，一张能用的表是五行，而不是手搭一个选项对象。</ktjs-feature>
 
-<ktjs-feature icon="lucide:book-open" title="文档也是 Kotlin">本站就是由 ktjs-docusaurus 构建的 Kotlin/JS 模块：类型化的配置与侧边栏、Markdown 页面、中英双语。</ktjs-feature>
+<ktjs-feature icon="lucide:languages" title="文档与演示都双语">文档站和演示页都能在中文与英文之间切换。</ktjs-feature>
 
-<ktjs-feature icon="lucide:rocket" title="Pages 与发布已接好">`pagesSite` 组装文档、demo 与 API 文档；`release.yml` 负责签名并经由 Maven Central hub 发布模块。</ktjs-feature>
+<ktjs-feature icon="lucide:list-checks" title="进度可查">每个上游包的覆盖状态都记在仓库里：已完成、待完成、明确不做。</ktjs-feature>
 
 </ktjs-features>
 
 <ktjs-next-steps section-title="接下来">
 
-<ktjs-step href="intro" title="简介">仓库里有什么，为什么不用任何初始化就能用。</ktjs-step>
+<ktjs-step href="intro" title="简介">这个封装是什么、封装了什么、仓库怎么组织。</ktjs-step>
 
-<ktjs-step href="guide/getting-started" title="快速开始">环境要求、构建任务与两个开发服务器。</ktjs-step>
+<ktjs-step href="guide/getting-started" title="快速开始">装依赖、建第一张表、跑演示与测试。</ktjs-step>
 
-<ktjs-step href="guide/deriving-a-project" title="派生新项目">把它改成你自己的 wrapper 的改名清单。</ktjs-step>
+<ktjs-step href="guide/list-table" title="列表">列、数据行、分组表头，以及 DSL 补的那些选项。</ktjs-step>
 
-<ktjs-step href="https://shijianjs.github.io/ktjs-wrapper-template/api/" title="API 文档">发布模块的 Dokka 产物。</ktjs-step>
+<ktjs-step href="guide/pivot-table" title="透视表">维度、指标与聚合。</ktjs-step>
+
+<ktjs-step href="https://shijianjs.github.io/ktjs-vtable/demo/" title="在线演示">六个可切换中英文的表格示例。</ktjs-step>
+
+<ktjs-step href="https://shijianjs.github.io/ktjs-vtable/api/" title="API 文档">发布模块的 Dokka 产物。</ktjs-step>
 
 </ktjs-next-steps>

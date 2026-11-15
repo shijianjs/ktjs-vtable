@@ -39,11 +39,11 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ktjs-wrapper-template"
+rootProject.name = "ktjs-vtable"
 
 // One Gradle project per published wrapper module. The sample module wraps a single npm package;
 // a derived project adds one include per package (or per group of packages that release together).
-include(":ktjs-wrapper-template-core")
+include(":ktjs-vtable")
 
 // The demo page, published under /demo/ of the Pages site. Not a published module.
 include(":demo")

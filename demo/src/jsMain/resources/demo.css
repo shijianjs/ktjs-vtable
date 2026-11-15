@@ -3,6 +3,9 @@
     --page-fg: #1f2933;
     --page-bg: #ffffff;
     --page-muted: #52606d;
+    --page-border: #d9e2ec;
+    --page-accent: #2f6feb;
+    --page-soft: #f5f7fa;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -10,6 +13,9 @@
         --page-fg: #e4e7eb;
         --page-bg: #111827;
         --page-muted: #9aa5b1;
+        --page-border: #374151;
+        --page-accent: #7aa2f7;
+        --page-soft: #1b2433;
     }
 }
 
@@ -28,15 +34,36 @@ body {
 }
 
 .page {
-    max-width: 72rem;
+    max-width: 84rem;
     margin: 0 auto;
     padding: 2rem 1.5rem 4rem;
 }
 
 .header {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--page-border);
+}
+
+.branding {
+    display: flex;
     align-items: center;
     gap: 1rem;
+    margin-right: auto;
+}
+
+.branding h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.subtitle {
+    margin: 0;
+    color: var(--page-muted);
+    font-size: 0.95rem;
 }
 
 .logo {
@@ -44,12 +71,110 @@ body {
     height: 56px;
 }
 
-.hint,
-.status {
+.lang-switch {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.lang,
+.chip,
+.toc-item {
+    font: inherit;
+    cursor: pointer;
+    color: inherit;
+    background: var(--page-soft);
+    border: 1px solid var(--page-border);
+    border-radius: 6px;
+    padding: 0.35rem 0.75rem;
+}
+
+.lang.active,
+.toc-item.active {
+    color: #ffffff;
+    background: var(--page-accent);
+    border-color: var(--page-accent);
+}
+
+.top-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.top-link {
+    color: var(--page-accent);
+    text-decoration: none;
+}
+
+.top-link:hover {
+    text-decoration: underline;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 13rem minmax(0, 1fr);
+    gap: 2rem;
+    margin-top: 1.75rem;
+}
+
+.toc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.toc-item {
+    text-align: left;
+}
+
+.stage h2 {
+    margin-top: 0;
+}
+
+.intro,
+.note {
     color: var(--page-muted);
 }
 
-/* The demo page is a plain page, so the element it wraps can be spaced with a tag selector here. */
-.page vaadin-button {
-    margin-right: 0.5rem;
+.table-host {
+    width: 100%;
+    height: 460px;
+    margin-top: 0.5rem;
+    border: 1px solid var(--page-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.toolbar {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.log {
+    margin: 1rem 0 0;
+    padding-left: 1.25rem;
+    color: var(--page-muted);
+}
+
+.error {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    overflow-x: auto;
+    color: var(--page-fg);
+    background: var(--page-soft);
+    border: 1px solid var(--page-border);
+    border-radius: 6px;
+    font-size: 0.85rem;
+    white-space: pre-wrap;
+}
+
+@media (max-width: 60rem) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .toc {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
 }

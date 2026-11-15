@@ -5,34 +5,52 @@ title: 简介
 
 # 简介
 
-`ktjs-wrapper-template` 是 Kotlin/JS wrapper 的起点，目标通常是 Web Component 生态的 npm 包。它刻意
-**不是**填占位符的脚手架：这个仓库本身就是一个完整项目——能构建、能在真实浏览器里跑测试、有自己的文档站、
-能部署到 GitHub Pages——所以复制一份就能在第一次 `./gradlew build` 跑起来。
+`ktjs-vtable` 是 [VisActor VTable](https://github.com/VisActor/VTable) 开源部分的 Kotlin/JS 封装。
+VTable 是一套画在 canvas 上的表格库，发布为 `@visactor/vtable`。声明由上游自己的 `.d.ts` 生成，日常
+构造表格、列、数据行的用法由一层很薄的手写 DSL 兜住。
 
-## 里面有什么
+[在线演示](https://shijianjs.github.io/ktjs-vtable/demo/) ·
+[API 文档](https://shijianjs.github.io/ktjs-vtable/api/) ·
+[源码](https://github.com/shijianjs/ktjs-vtable)
 
-| 部分 | 作用 |
+## 封装范围
+
+| 上游包 | 内容 | 状态 |
+| --- | --- | --- |
+| `@visactor/vtable` | `ListTable`、`PivotTable`、`PivotChart`、事件、主题、`register` 命名空间 | 已封装 |
+| `@visactor/vtable-editors` | 输入框、文本域、日期选择器三种单元格编辑器 | 已封装 |
+| `@visactor/vtable-export` | CSV / Excel 导出 | 待完成 |
+| `@visactor/vtable-search` | 表内搜索 | 待完成 |
+| `@visactor/vtable-plugins` | 选区、右键菜单等插件 | 待完成 |
+| `@visactor/vtable-gantt` | 甘特视图 | 待完成 |
+| `@visactor/vtable-sheet` | 电子表格视图 | 待完成 |
+| `@visactor/vtable-calendar` | 日历视图 | 待完成 |
+| `@visactor/react-vtable`、`-vue-vtable`、`-openinula-vtable` | 框架绑定 | 明确不做 |
+
+框架绑定不做，因为 Kotlin/JS 用不上 React / Vue / OpenInula 组件——Kotlin 调用方直接构造表格。待完成的
+包按状态列在 [包覆盖](guide/scope.md) 里，那张表是权威清单。
+
+封装发布的东西全是 MIT：VTable 本身是 MIT，封装只多了声明和一层薄 DSL，运行时的代码来自上游包。
+
+## 仓库结构
+
+| 模块 | 作用 |
 | --- | --- |
-| `ktjs-wrapper-template-core` | 示例模块：`@vaadin/button` 25.3.5。一个 npm 包、一个 Gradle 模块、一个 Kotlin 包；加下一个包时照它复制 |
-| `demo` | 用 wrapper 造两个 `<vaadin-button>` 的页面，发布在 `/demo/` |
-| `docs` | 本站：Kotlin 配置 + Markdown 页面，由 [ktjs-docusaurus](https://github.com/shijianjs/ktjs-docusaurus) 的 Gradle 插件构建 |
-| 其余 | 版本清单集中在一个 `package.json`、每模块独立的 `-kt.N` 修订号、Detekt、Playwright 浏览器测试、经 hub 发布到 Maven Central、Pages 工作流 |
+| `ktjs-vtable` | 发布的模块：生成的声明 + 手写 DSL |
+| `demo` | 演示页，发布在 Pages 的 `/demo/` |
+| `docs` | 本文档站，由 ktjs-docusaurus 构建的 Kotlin/JS 模块 |
 
-`/api/` 下是发布模块的 Dokka 产物——和 `pagesSite` 组装本站时用的是同一次 Dokka。
+`ktjs-vtable/src/jsMain/kotlin/io/github/shijianjs/ktjs/vtable/` 是生成目录，禁止手改；旁边的 `dsl`
+子包是手写的，生成器不会碰。怎么重新生成见 [开发](guide/development.md)。
+
+## 版本约定
+
+每个模块的版本是 `{上游 npm 版本}-kt.{修订号}`：上游版本只在根 `package.json` 里声明，修订号在
+`wrapper-revisions.properties` 里维护。工作树里的版本一律再带 `-SNAPSHOT`，开发构建不会冒用下一个要发的版本。
 
 ## 接下来
 
-- [快速开始](guide/getting-started.md)：构建、测试、开发服务器。
-- [派生新项目](guide/deriving-a-project.md)：改名的清单。
-
-## 各部分如何协作
-
-```mermaid
-flowchart TB
-  T["ktjs-wrapper-template<br/>（复制我）"] --> C["core：示例 wrapper"]
-  T --> D["demo：可运行的页面"]
-  T --> G["docs：本站"]
-  C --> V["@vaadin/button"]
-  G --> B["ktjs-docusaurus<br/>Gradle 插件"]
-  B --> P["GitHub Pages"]
-```
+- [快速开始](guide/getting-started.md) — 装依赖，建第一张表。
+- [列表](guide/list-table.md) — 列、数据行、分组表头。
+- [透视表](guide/pivot-table.md) — 维度与指标。
+- [主题与编辑器](guide/themes-and-editors.md) — 主题、单元格编辑器、事件。

@@ -1,30 +1,54 @@
-# ktjs-wrapper-template
+# ktjs-vtable
 
-<p align="center"><img src="docs/src/jsMain/resources/static/img/ktjs-wrapper-template-logo.png" width="120" alt="ktjs-wrapper-template"></p>
+<p align="center"><img src="docs/src/jsMain/resources/static/img/ktjs-vtable-logo.png" width="120" alt="ktjs-vtable"></p>
 
-一个立刻能跑的 Kotlin/JS wrapper 项目：一个 Gradle 模块包装
-[`@vaadin/button`](https://www.npmjs.com/package/@vaadin/button)，加上 demo 页面、用
-[ktjs-docusaurus](https://github.com/shijianjs/ktjs-docusaurus) 构建的文档站，以及围绕它们的测试与发布
-流水线。
+[VisActor VTable](https://github.com/VisActor/VTable) 开源部分的 Kotlin/JS 封装。声明由上游
+`.d.ts` 生成，日常用法再由一层手写 DSL 兜住。
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-**[文档](https://shijianjs.github.io/ktjs-wrapper-template/)** ·
-**[在线演示](https://shijianjs.github.io/ktjs-wrapper-template/demo/)** ·
-**[API 文档](https://shijianjs.github.io/ktjs-wrapper-template/api/)**
+**[文档](https://shijianjs.github.io/ktjs-vtable/zh-Hans/)** ·
+**[在线演示](https://shijianjs.github.io/ktjs-vtable/demo/)** ·
+**[API 文档](https://shijianjs.github.io/ktjs-vtable/api/)**
 
-复制仓库、改名即可——这就是全部「初始化」。这里没有等着脚本替换的占位符，所以复制出来的副本直接
-`./gradlew build` 就能过。改名清单在文档里：
-[派生新项目](https://shijianjs.github.io/ktjs-wrapper-template/zh-Hans/guide/deriving-a-project)。
+```kotlin
+val table = ListTable(container, listTableOptions {
+    columns(
+        textColumn("name", "姓名", 150.0),
+        textColumn("role", "方向", 160.0),
+        textColumn("city", "城市", 130.0),
+    )
+    records(
+        row("name" to "Ada Lovelace", "role" to "分析引擎", "city" to "伦敦"),
+        row("name" to "Grace Hopper", "role" to "编译器", "city" to "纽约"),
+    )
+    frozenColCount = 1.0
+    widthMode = StandardOrAdaptiveOrAutoWidths.adaptive
+})
+```
+
+## 范围
+
+只封装 VTable 里 **开源、MIT 许可** 的部分：
+
+| 上游包 | 状态 |
+| --- | --- |
+| `@visactor/vtable`（核心：列表、透视表、事件、主题、register） | 已封装 |
+| `@visactor/vtable-editors`（输入 / 文本域 / 日期编辑器） | 已封装 |
+| `@visactor/vtable-export`、`-search`、`-plugins`、`-gantt`、`-sheet`、`-calendar` | 未开始 |
+| `@visactor/react-vtable`、`-vue-vtable`、`-openinula-vtable` | 明确不做 |
+
+框架绑定不做，因为 Kotlin/JS 用不上 React/Vue/OpenInula 组件；其余包的进度记在
+[`docs/development/api-coverage.md`](docs/development/api-coverage.md)。
 
 ## 模块
 
 | 模块 | npm 包 | wrapper 版本 |
 | --- | --- | --- |
-| [ktjs-wrapper-template-core](ktjs-wrapper-template-core/README.zh-CN.md) | `@vaadin/button` | `25.3.5-kt.1` |
+| [ktjs-vtable](ktjs-vtable/README.zh-CN.md) | `@visactor/vtable`、`@visactor/vtable-editors` | `1.26.8-kt.1` |
 
-仓库按 npm 包（或一组共享上游版本与发版节奏的包）划分 `ktjs-wrapper-template-*` Gradle 模块。终端应用
-打包时本来就会摇树，把相关包合并到一个模块，比每个包各建一个模块更省发布额度和版本噪音。
+核心包和编辑器包上游版本一致、发版节奏一致，因此共用一个 Gradle 模块与一个 Kotlin 包
+（`io.github.shijianjs.ktjs.vtable`），沿用的是其它 `ktjs-*` 封装的既有做法。
 
 ## 版本约定
 
@@ -37,7 +61,22 @@ Gradle 从这两份文件推导基础版本和 `npm(...)` 依赖：
   发布时才用 `-Pktjs.release=true` 去掉后缀。
 - 上游升级：改 `package.json` 里的版本，基础版本自动跟随，修订号保持不变。
 - 仅 wrapper 修复：只把对应模块的修订号加一（`kt.2`、`kt.3`……）。
-- 修订号按模块维护，只增不减，永不重置为 `kt.1`。发布时只发修订号变化的模块。
+
+## 生成的声明
+
+`ktjs-vtable/src/jsMain/kotlin/io/github/shijianjs/ktjs/vtable/` 是生成目录，不要手改。生成器读取两个
+npm 包的 `.d.ts`，按上游模块一个文件地输出 Kotlin 声明，外加联合类型、字面量常量与 API 面报告：
+
+```bash
+python scripts/generate-api.py \
+    --types node_modules/@visactor/vtable/es \
+    --editors-types node_modules/@visactor/vtable-editors/es \
+    --emit
+```
+
+报告写到 `docs/development/api-surface-report.md`。生成器遵循的规则、以及它对上游写法的固定处理方式，记在
+[`docs/development/technical-decisions.md`](docs/development/technical-decisions.md)。手写代码放在
+`dsl` 子包里，生成器不会碰。
 
 ## 环境要求
 
@@ -50,7 +89,7 @@ Gradle 从这两份文件推导基础版本和 `npm(...)` 依赖：
 
 ```bash
 ./gradlew build                    # 编译、Detekt、浏览器测试
-./gradlew :ktjs-wrapper-template-core:jsBrowserTest
+./gradlew :ktjs-vtable:jsBrowserTest
 
 # demo 页面的端到端检查（Playwright，打打包产物）
 ./gradlew :demo:e2eTest
@@ -68,6 +107,13 @@ Gradle 从这两份文件推导基础版本和 `npm(...)` 依赖：
 ./gradlew kotlinUpgradePackageLock
 ```
 
+网络拉不动 npm 时，用国内镜像**只影响本地构建**；仓库与 CI 都不读这两个变量：
+
+```bash
+export YARN_REGISTRY=https://registry.npmmirror.com       # PowerShell: $env:YARN_REGISTRY="..."
+export NPM_CONFIG_REGISTRY=https://registry.npmmirror.com
+```
+
 `docs` 模块同样是 Kotlin/JS 项目。三个 ktjs-docusaurus 版本都写在 `gradle.properties` 里：wrapper klib、
 Gradle 插件、以及首页分区用到的工具箱——那个项目的每个模块各自带 `-kt.N` 修订号。写 SNAPSHOT 时从
 `mavenLocal` 解析。工具箱的浏览器那一半不是独立的 Maven 产物，而是 kit klib 里的资源，由
@@ -76,9 +122,8 @@ Gradle 插件、以及首页分区用到的工具箱——那个项目的每个�
 ## 发布
 
 发布配置统一在根 [`build.gradle.kts`](build.gradle.kts) 里，对所有模块生效。`.github/workflows/release.yml`
-签名、按 Maven 坐标打包并注册到共享的 Maven Central hub，由 hub 合并成一次 deployment。派生项目如果不想
-发布，删掉那条工作流和发布块即可，其它部分不依赖它。
+签名、按 Maven 坐标打包并注册到共享的 Maven Central hub，由 hub 合并成一次 deployment。
 
 ## 许可证
 
-[MIT](LICENSE)
+[MIT](LICENSE)。VTable 本身也是 MIT；封装只提供声明，运行时用到的仍是上游代码。
