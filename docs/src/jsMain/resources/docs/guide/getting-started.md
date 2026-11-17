@@ -88,8 +88,8 @@ are part of CI as separate steps.
 ## Develop
 
 ```bash
-./gradlew :docs:docusaurusStart    # dev server for this site
-./gradlew :demo:jsBrowserRun       # dev server for the demo page
+./gradlew :docs:docusaurusStart          # dev server for this site
+./gradlew :demo:jsBrowserDevelopmentRun  # dev server for the demo page
 ```
 
 Docusaurus watches the site directory, so Markdown edits reload; Kotlin changes need a first

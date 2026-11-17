@@ -84,8 +84,8 @@ fun main() {
 ## 开发
 
 ```bash
-./gradlew :docs:docusaurusStart    # 本站的开发服务器
-./gradlew :demo:jsBrowserRun       # demo 页的开发服务器
+./gradlew :docs:docusaurusStart          # 本站的开发服务器
+./gradlew :demo:jsBrowserDevelopmentRun  # demo 页的开发服务器
 ```
 
 Docusaurus 监听站点目录，改 Markdown 会自动刷新；改 Kotlin 需要先跑一次
