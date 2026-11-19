@@ -1,5 +1,9 @@
 package demo.page.edit
 
+import io.github.shijianjs.ktjs.demo.page.DemoPage
+import io.github.shijianjs.ktjs.dom.webcomponent.defineIfMissing
+import web.components.CustomElementReference
+import web.dom.TagName
 import demo.page.samples.people
 import demo.page.samples.toRecords
 import io.github.shijianjs.ktjs.demo.i18n.Binder
@@ -7,9 +11,7 @@ import io.github.shijianjs.ktjs.demo.i18n.Lang
 import io.github.shijianjs.ktjs.demo.i18n.Langs
 import io.github.shijianjs.ktjs.demo.i18n.Translations
 import io.github.shijianjs.ktjs.demo.i18n.texts
-import io.github.shijianjs.ktjs.demo.nav.Page
 import io.github.shijianjs.ktjs.demo.page.exampleBox
-import io.github.shijianjs.ktjs.demo.page.newPage
 import io.github.shijianjs.ktjs.demo.page.sectionBlock
 import io.github.shijianjs.ktjs.dom.element.inlineStyle
 import io.github.shijianjs.ktjs.dom.element.invoke
@@ -71,8 +73,7 @@ private val editTexts: Translations<EditTexts> = texts(
 /**
  * The editable table: two columns carry an editor, the frozen name column does not.
  */
-internal class EditPage : Page {
-    private val page = newPage()
+internal class EditPage : DemoPage() {
 
     private val texts = Binder(editTexts)
 
@@ -89,14 +90,13 @@ internal class EditPage : Page {
         }
     }
 
-    override val node get() = page
 
     init {
         val section = sectionBlock()
         texts.bind(section.title, { it.tableHeading })
         texts.bind(section.hint, { it.hint })
         section.body.append(exampleBox(null, host))
-        page.body.append(section.root)
+        body.append(section.root)
 
         // One global registration by name: the column then refers to the editor as `"input"`.
         editor("input", InputEditor(null).unsafeCast<IEditor>())
@@ -131,12 +131,26 @@ internal class EditPage : Page {
     override fun applyTranslation(lang: Lang) {
         current = editTexts[lang]
         language = lang
-        page.setTitle(current.title)
-        page.setSummary(current.summary)
+        setTitle(current.title)
+        setSummary(current.summary)
         texts.apply(lang)
         table?.release()
         table = null
         host.replaceChildren()
         createOnceMounted()
     }
+
+    companion object : CustomElementReference<EditPage>(EditPage::class.js) {
+        val NAME: TagName<EditPage> = TagName("vtable-edit-page")
+
+        fun define() {
+            defineIfMissing(NAME, this)
+        }
+    }
+}
+
+/** Creates a defined `<vtable-edit-page>`. */
+internal fun newEditPage(): EditPage {
+    EditPage.define()
+    return EditPage.NAME()
 }

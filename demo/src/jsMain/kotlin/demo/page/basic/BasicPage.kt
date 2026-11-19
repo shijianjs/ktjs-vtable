@@ -1,5 +1,9 @@
 package demo.page.basic
 
+import io.github.shijianjs.ktjs.demo.page.DemoPage
+import io.github.shijianjs.ktjs.dom.webcomponent.defineIfMissing
+import web.components.CustomElementReference
+import web.dom.TagName
 import demo.page.samples.people
 import demo.page.samples.toRecords
 import io.github.shijianjs.ktjs.demo.i18n.Binder
@@ -7,9 +11,7 @@ import io.github.shijianjs.ktjs.demo.i18n.Lang
 import io.github.shijianjs.ktjs.demo.i18n.Langs
 import io.github.shijianjs.ktjs.demo.i18n.Translations
 import io.github.shijianjs.ktjs.demo.i18n.texts
-import io.github.shijianjs.ktjs.demo.nav.Page
 import io.github.shijianjs.ktjs.demo.page.exampleBox
-import io.github.shijianjs.ktjs.demo.page.newPage
 import io.github.shijianjs.ktjs.demo.page.sectionBlock
 import io.github.shijianjs.ktjs.dom.element.inlineStyle
 import io.github.shijianjs.ktjs.dom.element.invoke
@@ -74,8 +76,7 @@ private val basicTexts: Translations<BasicTexts> = texts(
  * VTable paints into a canvas, so the host needs a real width *and* height before the table is
  * constructed: a canvas created against a zero-width box stays empty and the browser never redoes it.
  */
-internal class BasicPage : Page {
-    private val page = newPage()
+internal class BasicPage : DemoPage() {
 
     private val texts = Binder(basicTexts)
 
@@ -93,14 +94,13 @@ internal class BasicPage : Page {
         }
     }
 
-    override val node get() = page
 
     init {
         val section = sectionBlock()
         texts.bind(section.title, { it.tableHeading })
         texts.bind(section.hint, { it.hint })
         section.body.append(exampleBox(null, host))
-        page.body.append(section.root)
+        body.append(section.root)
 
         createOnceMounted()
     }
@@ -130,8 +130,8 @@ internal class BasicPage : Page {
     override fun applyTranslation(lang: Lang) {
         current = basicTexts[lang]
         language = lang
-        page.setTitle(current.title)
-        page.setSummary(current.summary)
+        setTitle(current.title)
+        setSummary(current.summary)
         texts.apply(lang)
         // The column headers are baked into the table at construction, so a language switch rebuilds
         // it; the table is a canvas, there is no header node to rewrite.
@@ -140,4 +140,18 @@ internal class BasicPage : Page {
         host.replaceChildren()
         createOnceMounted()
     }
+
+    companion object : CustomElementReference<BasicPage>(BasicPage::class.js) {
+        val NAME: TagName<BasicPage> = TagName("vtable-basic-page")
+
+        fun define() {
+            defineIfMissing(NAME, this)
+        }
+    }
+}
+
+/** Creates a defined `<vtable-basic-page>`. */
+internal fun newBasicPage(): BasicPage {
+    BasicPage.define()
+    return BasicPage.NAME()
 }

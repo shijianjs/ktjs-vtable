@@ -1,5 +1,9 @@
 package demo.page.events
 
+import io.github.shijianjs.ktjs.demo.page.DemoPage
+import io.github.shijianjs.ktjs.dom.webcomponent.defineIfMissing
+import web.components.CustomElementReference
+import web.dom.TagName
 import demo.page.samples.people
 import demo.page.samples.toRecords
 import io.github.shijianjs.ktjs.demo.i18n.Binder
@@ -7,10 +11,8 @@ import io.github.shijianjs.ktjs.demo.i18n.Lang
 import io.github.shijianjs.ktjs.demo.i18n.Langs
 import io.github.shijianjs.ktjs.demo.i18n.Translations
 import io.github.shijianjs.ktjs.demo.i18n.texts
-import io.github.shijianjs.ktjs.demo.nav.Page
 import io.github.shijianjs.ktjs.demo.page.EventLog
 import io.github.shijianjs.ktjs.demo.page.exampleBox
-import io.github.shijianjs.ktjs.demo.page.newPage
 import io.github.shijianjs.ktjs.demo.page.sectionBlock
 import io.github.shijianjs.ktjs.dom.element.inlineStyle
 import io.github.shijianjs.ktjs.dom.element.invoke
@@ -81,8 +83,7 @@ private external interface ClickedCell {
 /**
  * The events page: the table plus a log of the cells that were clicked.
  */
-internal class EventsPage : Page {
-    private val page = newPage()
+internal class EventsPage : DemoPage() {
 
     private val texts = Binder(eventsTexts)
 
@@ -101,14 +102,13 @@ internal class EventsPage : Page {
 
     private val log = EventLog(capacity = 6)
 
-    override val node get() = page
 
     init {
         val section = sectionBlock()
         texts.bind(section.title, { it.tableHeading })
         texts.bind(section.hint, { it.hint })
         section.body.append(exampleBox(null, host), log.root)
-        page.body.append(section.root)
+        body.append(section.root)
         log.root.setAttribute("data-log", "")
 
         createOnceMounted()
@@ -146,8 +146,8 @@ internal class EventsPage : Page {
     override fun applyTranslation(lang: Lang) {
         current = eventsTexts[lang]
         language = lang
-        page.setTitle(current.title)
-        page.setSummary(current.summary)
+        setTitle(current.title)
+        setSummary(current.summary)
         texts.apply(lang)
         // The headers are inside the canvas, so the table is rebuilt; the log is the page's own and
         // keeps what it has, in whatever language those lines were written.
@@ -156,4 +156,18 @@ internal class EventsPage : Page {
         host.replaceChildren()
         createOnceMounted()
     }
+
+    companion object : CustomElementReference<EventsPage>(EventsPage::class.js) {
+        val NAME: TagName<EventsPage> = TagName("vtable-events-page")
+
+        fun define() {
+            defineIfMissing(NAME, this)
+        }
+    }
+}
+
+/** Creates a defined `<vtable-events-page>`. */
+internal fun newEventsPage(): EventsPage {
+    EventsPage.define()
+    return EventsPage.NAME()
 }

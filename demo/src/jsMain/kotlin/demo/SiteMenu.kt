@@ -1,12 +1,12 @@
 package demo
 
-import demo.page.basic.BasicPage
-import demo.page.edit.EditPage
-import demo.page.events.EventsPage
-import demo.page.group.GroupPage
-import demo.page.overview.OverviewPage
-import demo.page.pivot.PivotPage
-import demo.page.theme.ThemePage
+import demo.page.basic.newBasicPage
+import demo.page.edit.newEditPage
+import demo.page.events.newEventsPage
+import demo.page.group.newGroupPage
+import demo.page.overview.newOverviewPage
+import demo.page.pivot.newPivotPage
+import demo.page.theme.newThemePage
 import io.github.shijianjs.ktjs.demo.nav.DemoMenu
 import io.github.shijianjs.ktjs.demo.nav.Entry
 import io.github.shijianjs.ktjs.demo.nav.Group
@@ -36,12 +36,12 @@ internal val INTERACTION: Group = Group("interaction", "lucide:mouse-pointer-cli
  */
 fun siteMenu(): DemoMenu = DemoMenu(
     listOf(
-        Entry("overview", START) { OverviewPage() },
-        Entry("basic", TABLES) { BasicPage() },
-        Entry("group", TABLES) { GroupPage() },
-        Entry("pivot", TABLES) { PivotPage() },
-        Entry("edit", INTERACTION) { EditPage() },
-        Entry("theme", INTERACTION) { ThemePage() },
-        Entry("events", INTERACTION) { EventsPage() },
+        Entry("overview", START) { newOverviewPage() },
+        Entry("basic", TABLES) { newBasicPage() },
+        Entry("group", TABLES) { newGroupPage() },
+        Entry("pivot", TABLES) { newPivotPage() },
+        Entry("edit", INTERACTION) { newEditPage() },
+        Entry("theme", INTERACTION) { newThemePage() },
+        Entry("events", INTERACTION) { newEventsPage() },
     ),
 )

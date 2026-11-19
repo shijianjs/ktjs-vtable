@@ -1,13 +1,15 @@
 package demo.page.pivot
 
+import io.github.shijianjs.ktjs.demo.page.DemoPage
+import io.github.shijianjs.ktjs.dom.webcomponent.defineIfMissing
+import web.components.CustomElementReference
+import web.dom.TagName
 import io.github.shijianjs.ktjs.demo.i18n.Binder
 import io.github.shijianjs.ktjs.demo.i18n.Lang
 import io.github.shijianjs.ktjs.demo.i18n.Langs
 import io.github.shijianjs.ktjs.demo.i18n.Translations
 import io.github.shijianjs.ktjs.demo.i18n.texts
-import io.github.shijianjs.ktjs.demo.nav.Page
 import io.github.shijianjs.ktjs.demo.page.exampleBox
-import io.github.shijianjs.ktjs.demo.page.newPage
 import io.github.shijianjs.ktjs.demo.page.sectionBlock
 import io.github.shijianjs.ktjs.dom.element.inlineStyle
 import io.github.shijianjs.ktjs.dom.element.invoke
@@ -92,8 +94,7 @@ private external interface PivotIndicator {
 /**
  * The pivot table: two indicators over two dimensions.
  */
-internal class PivotPage : Page {
-    private val page = newPage()
+internal class PivotPage : DemoPage() {
 
     private val texts = Binder(pivotTexts)
 
@@ -108,14 +109,13 @@ internal class PivotPage : Page {
         }
     }
 
-    override val node get() = page
 
     init {
         val section = sectionBlock()
         texts.bind(section.title, { it.tableHeading })
         texts.bind(section.hint, { it.hint })
         section.body.append(exampleBox(null, host))
-        page.body.append(section.root)
+        body.append(section.root)
 
         createOnceMounted()
     }
@@ -155,8 +155,8 @@ internal class PivotPage : Page {
 
     override fun applyTranslation(lang: Lang) {
         current = pivotTexts[lang]
-        page.setTitle(current.title)
-        page.setSummary(current.summary)
+        setTitle(current.title)
+        setSummary(current.summary)
         texts.apply(lang)
         // Dimension titles and the record values are baked in at construction: rebuild the canvas.
         table?.release()
@@ -164,4 +164,18 @@ internal class PivotPage : Page {
         host.replaceChildren()
         createOnceMounted()
     }
+
+    companion object : CustomElementReference<PivotPage>(PivotPage::class.js) {
+        val NAME: TagName<PivotPage> = TagName("vtable-pivot-page")
+
+        fun define() {
+            defineIfMissing(NAME, this)
+        }
+    }
+}
+
+/** Creates a defined `<vtable-pivot-page>`. */
+internal fun newPivotPage(): PivotPage {
+    PivotPage.define()
+    return PivotPage.NAME()
 }

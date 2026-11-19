@@ -1,5 +1,9 @@
 package demo.page.theme
 
+import io.github.shijianjs.ktjs.demo.page.DemoPage
+import io.github.shijianjs.ktjs.dom.webcomponent.defineIfMissing
+import web.components.CustomElementReference
+import web.dom.TagName
 import demo.page.samples.people
 import demo.page.samples.toRecords
 import io.github.shijianjs.ktjs.demo.i18n.Binder
@@ -7,9 +11,7 @@ import io.github.shijianjs.ktjs.demo.i18n.Lang
 import io.github.shijianjs.ktjs.demo.i18n.Langs
 import io.github.shijianjs.ktjs.demo.i18n.Translations
 import io.github.shijianjs.ktjs.demo.i18n.texts
-import io.github.shijianjs.ktjs.demo.nav.Page
 import io.github.shijianjs.ktjs.demo.page.exampleBox
-import io.github.shijianjs.ktjs.demo.page.newPage
 import io.github.shijianjs.ktjs.demo.page.row
 import io.github.shijianjs.ktjs.demo.page.sectionBlock
 import io.github.shijianjs.ktjs.dom.element.inlineStyle
@@ -81,8 +83,7 @@ private val THEMES: List<String> = listOf("default", "dark", "bright")
 /**
  * The themes page: one table, three built-in themes, rebuilt on demand.
  */
-internal class ThemePage : Page {
-    private val page = newPage()
+internal class ThemePage : DemoPage() {
 
     private val texts = Binder(themeTexts)
 
@@ -106,7 +107,6 @@ internal class ThemePage : Page {
         createButton { setAttribute("data-theme-action", name) }
     }
 
-    override val node get() = page
 
     init {
         val section = sectionBlock()
@@ -116,7 +116,7 @@ internal class ThemePage : Page {
             row(*buttons.toTypedArray()),
             exampleBox(null, host),
         )
-        page.body.append(section.root)
+        body.append(section.root)
 
         buttons.forEachIndexed { index, button ->
             button.clickEvent.addHandler { select(THEMES[index]) }
@@ -159,8 +159,8 @@ internal class ThemePage : Page {
     override fun applyTranslation(lang: Lang) {
         current = themeTexts[lang]
         language = lang
-        page.setTitle(current.title)
-        page.setSummary(current.summary)
+        setTitle(current.title)
+        setSummary(current.summary)
         texts.apply(lang)
         buttons.forEachIndexed { index, button ->
             button.textContent = current.labels.getOrElse(index) { "" }
@@ -170,4 +170,18 @@ internal class ThemePage : Page {
         host.replaceChildren()
         createOnceMounted()
     }
+
+    companion object : CustomElementReference<ThemePage>(ThemePage::class.js) {
+        val NAME: TagName<ThemePage> = TagName("vtable-theme-page")
+
+        fun define() {
+            defineIfMissing(NAME, this)
+        }
+    }
+}
+
+/** Creates a defined `<vtable-theme-page>`. */
+internal fun newThemePage(): ThemePage {
+    ThemePage.define()
+    return ThemePage.NAME()
 }

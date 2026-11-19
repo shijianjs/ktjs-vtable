@@ -1,13 +1,15 @@
 package demo.page.group
 
+import io.github.shijianjs.ktjs.demo.page.DemoPage
+import io.github.shijianjs.ktjs.dom.webcomponent.defineIfMissing
+import web.components.CustomElementReference
+import web.dom.TagName
 import io.github.shijianjs.ktjs.demo.i18n.Binder
 import io.github.shijianjs.ktjs.demo.i18n.Lang
 import io.github.shijianjs.ktjs.demo.i18n.Langs
 import io.github.shijianjs.ktjs.demo.i18n.Translations
 import io.github.shijianjs.ktjs.demo.i18n.texts
-import io.github.shijianjs.ktjs.demo.nav.Page
 import io.github.shijianjs.ktjs.demo.page.exampleBox
-import io.github.shijianjs.ktjs.demo.page.newPage
 import io.github.shijianjs.ktjs.demo.page.sectionBlock
 import io.github.shijianjs.ktjs.dom.element.inlineStyle
 import io.github.shijianjs.ktjs.dom.element.invoke
@@ -66,8 +68,7 @@ private val groupTexts: Translations<GroupTexts> = texts(
 /**
  * The grouped-header table: two group headers, five score columns below them.
  */
-internal class GroupPage : Page {
-    private val page = newPage()
+internal class GroupPage : DemoPage() {
 
     private val texts = Binder(groupTexts)
 
@@ -82,14 +83,13 @@ internal class GroupPage : Page {
         }
     }
 
-    override val node get() = page
 
     init {
         val section = sectionBlock()
         texts.bind(section.title, { it.tableHeading })
         texts.bind(section.hint, { it.hint })
         section.body.append(exampleBox(null, host))
-        page.body.append(section.root)
+        body.append(section.root)
 
         createOnceMounted()
     }
@@ -129,8 +129,8 @@ internal class GroupPage : Page {
 
     override fun applyTranslation(lang: Lang) {
         current = groupTexts[lang]
-        page.setTitle(current.title)
-        page.setSummary(current.summary)
+        setTitle(current.title)
+        setSummary(current.summary)
         texts.apply(lang)
         // The group titles are part of the column tree, so the canvas is rebuilt rather than patched.
         table?.release()
@@ -138,4 +138,18 @@ internal class GroupPage : Page {
         host.replaceChildren()
         createOnceMounted()
     }
+
+    companion object : CustomElementReference<GroupPage>(GroupPage::class.js) {
+        val NAME: TagName<GroupPage> = TagName("vtable-group-page")
+
+        fun define() {
+            defineIfMissing(NAME, this)
+        }
+    }
+}
+
+/** Creates a defined `<vtable-group-page>`. */
+internal fun newGroupPage(): GroupPage {
+    GroupPage.define()
+    return GroupPage.NAME()
 }
