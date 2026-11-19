@@ -574,6 +574,32 @@ klibs.io 从 Maven Central 与 GitHub 自动抓取，无需提交元数据文件
 
 - `demo` 只消费公共 API，不发布、也不进入 Dokka。根 `build.gradle.kts` 的发布与 Dokka 配置按
   `ktjs-vtable-` 前缀过滤子模块，新增非发布模块时沿用该约定。
+- 演示页的外壳（`.brandAssets` 拷贝 logo / Lumo 样式、导航、语言与外观菜单、面包屑）来自
+  `ktjs-demo-kit`，本仓库只写内容：`demo/src/jsMain/kotlin/demo/` 下的 `Main.kt`（`DemoLayout.define()` +
+  `LayoutConfig`）、`SiteMenu.kt`（分组与页面路由）、`SiteTexts.kt`（外壳文案），页面在 `page/<组>/` 里。
+  `entry` 不再带图标：菜单只有最外层与分组行有图标，子菜单的图标由 kit 忽略。
+- `demo/build.gradle.kts` 的 `jsMain.dependencies` 里是 `ktjs-demo-kit` / `ktjs-vaadin-web-components` /
+  `ktjs-iconify-icon` 与 `:ktjs-vtable`；`gradle.properties` 只写 `*-SNAPSHOT`，不写成品版本号。
+- 页面：`newPage()` → `sectionBlock()` → `exampleBox(null, host)`，宿主是
+  `<div data-table="basic" style="height:320px">`。**VTable 画 canvas**，构造时按宿主当时的尺寸建画布：
+  宽度还是 0 时得到一张永远补不上来的空白且 console 不报错，所以每页都 `createOnceMounted()` 等
+  `host.clientWidth >= 200`。
+- 换语言 / 换主题都要**重建**表格：列标题、分组标题、主题 token 都在构造时烘进画布，没有可改的节点。
+  顺序固定为 `table.release()` → `table = null` → `host.replaceChildren()` → `createOnceMounted()`。
+- `listTableOptions { … }` 的 `theme` 是 `ITableThemeDefine?`；在收块里写 `this.theme = VTable.themeOr(name)`
+  时**不要**再给页面加一个叫 `theme` 的字段——收块的隐式接收者会先命中它，参数类型立刻对不上（KT 报
+  `ITableThemeDefine?` 传给 `String`）。页面里的字段叫 `themeName`。
+- 端到端测试是 `demo` 的 JVM 目标里的 Playwright JUnit 5 套件（`demo/src/jvmTest/kotlin/demo/e2e`）：
+  Playwright 驱动打包后的 `demo/build/dist/js/productionExecutable`，`DemoServer` 用 Hutool 的
+  `SimpleServer` 在测试 JVM 内提供静态文件。运行 `./gradlew :demo:e2eTest`；它不在 `check` 里，CI 在
+  `pagesSite` 之后单独执行。`jvmTest` 本身被禁用，避免 `build` / `check` 依赖浏览器。Playwright 与
+  Chromium 复用第一个 wrapper 模块的 `kotlinInstallPlaywrightBrowsers`，因此
+  `com.microsoft.playwright:playwright` 的版本必须与 KGP 安装的 npm `playwright` 一致（当前都是
+  1.61.0），升级 KGP 后若浏览器版本不匹配，重新跑安装任务。
+- 端到端断言用的选择器都在 shadow 树里（Playwright 的 CSS 能穿 shadow，`document.querySelector` 不能）：
+  页面标题 `ktjs-demo-page h1`、菜单项 `vaadin-side-nav-item[data-route=<id>]`、语言菜单
+  `[data-menu='lang']`（命中两个元素，取 `.first()`）、主题按钮 `[data-theme-action=<name>]`、表格宿主
+  `[data-table=<route>]`、事件日志 `[data-log]`。
 - 根 `package.json` 的 `browserslist` 是构建必需项，不是装饰：Babel 从生成的站点目录往上找到它才有编译
   目标。没有它 `@babel/preset-env` 按 ES5 处理，`async/await` 被翻成 regenerator 状态机，
   `@docusaurus/theme-mermaid` 里 `if (__DOCUSAURUS_MERMAID_LAYOUT_ELK_ENABLED__)` 这个守卫就不再是死代码，

@@ -2,6 +2,21 @@ plugins {
     kotlin("multiplatform")
 }
 
+// The demo shell (`ktjs-demo-kit`) is built from Vaadin's published wrapper, which ships the
+// JavaScript side of `@vaadin/vaadin-lumo-styles` but not the CSS: that is a page-level `<link>`,
+// taken from the npm workspace the Kotlin/JS plugin installs at the root.
+val lumoStyles = rootProject.layout.buildDirectory.dir("js/node_modules/@vaadin/vaadin-lumo-styles/dist")
+
+val copyLumoStyles = tasks.register<Copy>("copyLumoStyles") {
+    description = "Copies the pre-built Lumo stylesheet into the demo resources."
+    dependsOn(":kotlinNpmInstall")
+    from(lumoStyles) {
+        include("lumo.css")
+        include("utility.css")
+    }
+    into(layout.buildDirectory.dir("generated/lumo"))
+}
+
 // The brand image lives with the site's static files and is copied in here, so the demo and the
 // documentation cannot drift apart. `srcDir(task)` only contributes the directory, not the
 // dependency, hence the explicit wiring below.
@@ -17,6 +32,15 @@ kotlin {
     js {
         useEsModules()
 
+        // Custom elements need a class: at the default ES5 target Kotlin emits
+        // `function X() { HTMLElement.call(this) }`, and a DOM constructor may only be invoked with
+        // `new` — the tag never upgrades. The demo shell is a custom element, so ES2015 is required;
+        // the opt-in is the same one the demo kit compiles with, for `JsAny` interop it exposes.
+        compilerOptions {
+            target = "es2015"
+            optIn.add("kotlin.js.ExperimentalWasmJsInterop")
+        }
+
         // The demo is a standalone page, so the JS target needs an executable webpack bundle.
         binaries.executable()
         browser()
@@ -29,11 +53,17 @@ kotlin {
     sourceSets {
         jsMain {
             resources.srcDir(brandAssets)
+            resources.srcDir(copyLumoStyles)
         }
         jsMain.dependencies {
             implementation("org.jetbrains.kotlin-wrappers:kotlin-browser:2026.11.1")
             // The published modules the demo demonstrates, one line each.
             implementation(project(":ktjs-vtable"))
+            // The shared demo shell: layout, menu, router, i18n. Published to `mavenLocal` by a
+            // working tree of the `ktjs-dom-kit` repository until the release batch.
+            implementation(
+                "io.github.shijianjs:ktjs-demo-kit-js:${providers.gradleProperty("ktjs-demo-kit.version").get()}",
+            )
         }
 
         jvmTest.dependencies {
@@ -50,7 +80,7 @@ kotlin {
 // `srcDir(task)` contributes the directory but not the task dependency; resource processing is what
 // reads that directory, so the edge belongs there.
 tasks.named("jsProcessResources") {
-    dependsOn(brandAssets)
+    dependsOn(brandAssets, copyLumoStyles)
 }
 
 // ---------------------------------------------------------------------------------------------
