@@ -42,6 +42,19 @@ VTable 是一套画在 canvas 上的表格库，发布为 `@visactor/vtable`。�
 
 `ktjs-vtable/src/jsMain/kotlin/io/github/shijianjs/ktjs/vtable/` 是生成目录，禁止手改；旁边的 `dsl`
 子包是手写的，生成器不会碰。怎么重新生成见 [开发](guide/development.md)。
+```mermaid
+flowchart LR
+  NPM["@visactor/vtable"] -->|"上游 .d.ts 生成"| GEN["vtable/ 生成目录（禁止手改）"]
+  GEN --> DSL["dsl/ 手写薄层<br/>listTableOptions、columns、records"]
+  NPM --> ED["@visactor/vtable-editors<br/>输入框 / 文本域 / 日期选择器"]
+  ED --> DSL
+  DSL --> LT["ListTable"]
+  DSL --> PT["PivotTable / PivotChart"]
+  LT --> DEMO["演示页"]
+  PT --> DEMO
+```
+
+生成目录与手写层是同一棵树里的两个子包，边界由生成器守着：重新生成只覆盖 `vtable/`，`dsl/` 不会被碰。
 
 ## 版本约定
 
