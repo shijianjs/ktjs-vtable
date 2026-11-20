@@ -30,32 +30,6 @@ import web.cssom.px
 import web.html.HTMLElement
 import web.html.HtmlTagName
 
-private val editEnglish: EditTexts = EditTexts(
-    title = "Editable cells",
-    summary = "Columns with an editor open an input when you double-click a cell: the upstream " +
-        "@visactor/vtable-editors input editor, registered by name.",
-    tableHeading = "Edit in place",
-    hint = "Double-click a role or city cell to edit it; the name column stays read-only.",
-    colName = "Name",
-    colRole = "Role",
-    colCity = "City",
-)
-
-private val editChinese: EditTexts = EditTexts(
-    title = "可编辑单元格",
-    summary = "带编辑器的列在双击单元格时弹出输入框：就是上游 @visactor/vtable-editors 的输入编辑器，按名字注册。",
-    tableHeading = "原地编辑",
-    hint = "双击方向或城市单元格即可编辑；姓名列是只读的。",
-    colName = "姓名",
-    colRole = "方向",
-    colCity = "城市",
-)
-
-private val editTexts: Translations<EditTexts> = texts(
-    Langs.EN to editEnglish,
-    Langs.ZH_HANS to editChinese,
-)
-
 /**
  * The editable table: two columns carry an editor, the frozen name column does not.
  */
@@ -125,5 +99,30 @@ internal class EditPage : DemoPage() {
         createOnceMounted()
     }
 
-    companion object : CustomElementReferenceAdapter<EditPage>(EditPage::class.js, "vtable-edit-page")
+    companion object : CustomElementReferenceAdapter<EditPage>(EditPage::class.js, "vtable-edit-page") {
+
+        private val editEnglish: EditTexts = EditTexts(
+            title = "Editable cells",
+            summary = "Columns with an editor open an input when you double-click a cell: the upstream " +
+                "@visactor/vtable-editors input editor, registered by name.",
+            tableHeading = "Edit in place",
+            hint = "Double-click a role or city cell to edit it; the name column stays read-only.",
+            colName = "Name",
+            colRole = "Role",
+            colCity = "City",
+        )
+        private val editChinese: EditTexts = EditTexts(
+            title = "可编辑单元格",
+            summary = "带编辑器的列在双击单元格时弹出输入框：就是上游 @visactor/vtable-editors 的输入编辑器，按名字注册。",
+            tableHeading = "原地编辑",
+            hint = "双击方向或城市单元格即可编辑；姓名列是只读的。",
+            colName = "姓名",
+            colRole = "方向",
+            colCity = "城市",
+        )
+        private val editTexts: Translations<EditTexts> = texts(
+            Langs.EN to editEnglish,
+            Langs.ZH_HANS to editChinese,
+        )
+    }
 }

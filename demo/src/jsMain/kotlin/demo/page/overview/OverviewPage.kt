@@ -19,60 +19,6 @@ import io.github.shijianjs.ktjs.dom.element.unaryPlus
 import io.github.shijianjs.ktjs.dom.webcomponent.CustomElementReferenceAdapter
 import web.html.HtmlTagName
 
-private val overviewEnglish: OverviewTexts = OverviewTexts(
-    title = "Overview",
-    summary = "A Kotlin/JS wrapper for the open-source packages of VisActor VTable: list tables, pivot " +
-        "tables and the editors that go with them.",
-    docsLink = "Documentation",
-    sourceLink = "Source repository",
-    apiLink = "API reference",
-    purposeHeading = "What it wraps",
-    body = "VTable draws tables on a canvas: columns, records, frozen panes, themes and editors are all " +
-        "options of one constructor. The wrapper keeps the generated declarations and adds a DSL on top, " +
-        "so `listTableOptions { columns(textColumn(\"name\", \"Name\", 150.0)); records(…) }` describes " +
-        "a table without a dictionary of strings.",
-    bullets = listOf(
-        "ListTable(host, listTableOptions { … }) — rows, columns, frozen panes.",
-        "groupColumn(title, …) — a header over several columns.",
-        "PivotTable(host, pivotTableOptions { rows = …; columns = …; indicators = … }) — the same rows, aggregated.",
-    ),
-    optionsHeading = "The host needs a size",
-    optionsBody = "A canvas has no layout of its own: the table measures the element it was given at " +
-        "construction and paints at that size. A host that is still zero-width when the table is built " +
-        "produces an empty canvas that never fills in, so every page here waits for `clientWidth >= 200`.",
-    nextHeading = "Reading order",
-    nextBody = "The overview, then the tables: basic, grouped header and pivot; then the interaction " +
-        "pages — editing, themes and events.",
-)
-
-private val overviewChinese: OverviewTexts = OverviewTexts(
-    title = "概览",
-    summary = "VisActor VTable 开源部分的 Kotlin/JS 封装：列表、透视表，以及配套的编辑器。",
-    docsLink = "使用文档",
-    sourceLink = "源码仓库",
-    apiLink = "API 文档",
-    purposeHeading = "它封装了什么",
-    body = "VTable 把表格画在 canvas 上：列、记录、冻结窗格、主题与编辑器都是同一个构造函数的选项。" +
-        "封装保留生成声明，并在其上补一层 DSL，于是 " +
-        "`listTableOptions { columns(textColumn(\"name\", \"Name\", 150.0)); records(…) }` 就能描述一张表，" +
-        "而不是一堆字符串字典。",
-    bullets = listOf(
-        "ListTable(host, listTableOptions { … }) —— 行、列、冻结窗格。",
-        "groupColumn(title, …) —— 跨若干列的表头。",
-        "PivotTable(host, pivotTableOptions { rows = …; columns = …; indicators = … }) —— 同一批行，聚合展示。",
-    ),
-    optionsHeading = "宿主必须有尺寸",
-    optionsBody = "canvas 没有自己的布局：表在构造时测量它拿到的元素、并按那个尺寸作画。宿主在创建时宽度还是 0，" +
-        "画出来的就是一张永远不会补上的空白，所以这里每个页面都等 `clientWidth >= 200`。",
-    nextHeading = "建议顺序",
-    nextBody = "先看概览，再看表格：基础、分组表头、透视表；然后是交互页 —— 编辑、主题与事件。",
-)
-
-private val overviewTexts: Translations<OverviewTexts> = texts(
-    Langs.EN to overviewEnglish,
-    Langs.ZH_HANS to overviewChinese,
-)
-
 /**
  * Landing page: what the library wraps, how it is consumed, where the reference lives.
  */
@@ -114,5 +60,58 @@ internal class OverviewPage : DemoPage() {
         texts.apply(lang)
     }
 
-    companion object : CustomElementReferenceAdapter<OverviewPage>(OverviewPage::class.js, "vtable-overview-page")
+    companion object : CustomElementReferenceAdapter<OverviewPage>(OverviewPage::class.js, "vtable-overview-page") {
+
+        private val overviewEnglish: OverviewTexts = OverviewTexts(
+            title = "Overview",
+            summary = "A Kotlin/JS wrapper for the open-source packages of VisActor VTable: list tables, pivot " +
+                "tables and the editors that go with them.",
+            docsLink = "Documentation",
+            sourceLink = "Source repository",
+            apiLink = "API reference",
+            purposeHeading = "What it wraps",
+            body = "VTable draws tables on a canvas: columns, records, frozen panes, themes and editors are all " +
+                "options of one constructor. The wrapper keeps the generated declarations and adds a DSL on top, " +
+                "so `listTableOptions { columns(textColumn(\"name\", \"Name\", 150.0)); records(…) }` describes " +
+                "a table without a dictionary of strings.",
+            bullets = listOf(
+                "ListTable(host, listTableOptions { … }) — rows, columns, frozen panes.",
+                "groupColumn(title, …) — a header over several columns.",
+                "PivotTable(host, pivotTableOptions { rows = …; columns = …; indicators = … }) — the same rows, aggregated.",
+            ),
+            optionsHeading = "The host needs a size",
+            optionsBody = "A canvas has no layout of its own: the table measures the element it was given at " +
+                "construction and paints at that size. A host that is still zero-width when the table is built " +
+                "produces an empty canvas that never fills in, so every page here waits for `clientWidth >= 200`.",
+            nextHeading = "Reading order",
+            nextBody = "The overview, then the tables: basic, grouped header and pivot; then the interaction " +
+                "pages — editing, themes and events.",
+        )
+        private val overviewChinese: OverviewTexts = OverviewTexts(
+            title = "概览",
+            summary = "VisActor VTable 开源部分的 Kotlin/JS 封装：列表、透视表，以及配套的编辑器。",
+            docsLink = "使用文档",
+            sourceLink = "源码仓库",
+            apiLink = "API 文档",
+            purposeHeading = "它封装了什么",
+            body = "VTable 把表格画在 canvas 上：列、记录、冻结窗格、主题与编辑器都是同一个构造函数的选项。" +
+                "封装保留生成声明，并在其上补一层 DSL，于是 " +
+                "`listTableOptions { columns(textColumn(\"name\", \"Name\", 150.0)); records(…) }` 就能描述一张表，" +
+                "而不是一堆字符串字典。",
+            bullets = listOf(
+                "ListTable(host, listTableOptions { … }) —— 行、列、冻结窗格。",
+                "groupColumn(title, …) —— 跨若干列的表头。",
+                "PivotTable(host, pivotTableOptions { rows = …; columns = …; indicators = … }) —— 同一批行，聚合展示。",
+            ),
+            optionsHeading = "宿主必须有尺寸",
+            optionsBody = "canvas 没有自己的布局：表在构造时测量它拿到的元素、并按那个尺寸作画。宿主在创建时宽度还是 0，" +
+                "画出来的就是一张永远不会补上的空白，所以这里每个页面都等 `clientWidth >= 200`。",
+            nextHeading = "建议顺序",
+            nextBody = "先看概览，再看表格：基础、分组表头、透视表；然后是交互页 —— 编辑、主题与事件。",
+        )
+        private val overviewTexts: Translations<OverviewTexts> = texts(
+            Langs.EN to overviewEnglish,
+            Langs.ZH_HANS to overviewChinese,
+        )
+    }
 }

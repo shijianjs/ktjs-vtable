@@ -24,43 +24,6 @@ import web.cssom.px
 import web.html.HTMLElement
 import web.html.HtmlTagName
 
-private val pivotEnglish: PivotTexts = PivotTexts(
-    title = "Pivot table",
-    summary = "Rows and columns are dimensions, indicators are aggregated values: the same flat records " +
-        "arranged by region and category.",
-    tableHeading = "Aggregated view",
-    hint = "Drag a row-header cell to reorder the dimensions; the indicators are summed, as the " +
-        "`aggregationType` says.",
-    dimRegion = "Region",
-    dimCategory = "Category",
-    indSales = "Sales",
-    indProfit = "Profit",
-    east = "East",
-    west = "West",
-    categoryA = "Category A",
-    categoryB = "Category B",
-)
-
-private val pivotChinese: PivotTexts = PivotTexts(
-    title = "透视表",
-    summary = "行与列是维度，指标是聚合后的数值：同一批平坦记录，按区域与类别重排。",
-    tableHeading = "聚合视图",
-    hint = "拖动行表头单元格可以调整维度顺序；指标按 `aggregationType` 求和。",
-    dimRegion = "区域",
-    dimCategory = "类别",
-    indSales = "销售额",
-    indProfit = "利润",
-    east = "华东",
-    west = "西部",
-    categoryA = "类别 A",
-    categoryB = "类别 B",
-)
-
-private val pivotTexts: Translations<PivotTexts> = texts(
-    Langs.EN to pivotEnglish,
-    Langs.ZH_HANS to pivotChinese,
-)
-
 /** Upstream pivot options take dimension/indicator objects; only the fields the demo uses are typed. */
 private external interface PivotDimension {
     var field: String
@@ -146,5 +109,41 @@ internal class PivotPage : DemoPage() {
         createOnceMounted()
     }
 
-    companion object : CustomElementReferenceAdapter<PivotPage>(PivotPage::class.js, "vtable-pivot-page")
+    companion object : CustomElementReferenceAdapter<PivotPage>(PivotPage::class.js, "vtable-pivot-page") {
+
+        private val pivotEnglish: PivotTexts = PivotTexts(
+            title = "Pivot table",
+            summary = "Rows and columns are dimensions, indicators are aggregated values: the same flat records " +
+                "arranged by region and category.",
+            tableHeading = "Aggregated view",
+            hint = "Drag a row-header cell to reorder the dimensions; the indicators are summed, as the " +
+                "`aggregationType` says.",
+            dimRegion = "Region",
+            dimCategory = "Category",
+            indSales = "Sales",
+            indProfit = "Profit",
+            east = "East",
+            west = "West",
+            categoryA = "Category A",
+            categoryB = "Category B",
+        )
+        private val pivotChinese: PivotTexts = PivotTexts(
+            title = "透视表",
+            summary = "行与列是维度，指标是聚合后的数值：同一批平坦记录，按区域与类别重排。",
+            tableHeading = "聚合视图",
+            hint = "拖动行表头单元格可以调整维度顺序；指标按 `aggregationType` 求和。",
+            dimRegion = "区域",
+            dimCategory = "类别",
+            indSales = "销售额",
+            indProfit = "利润",
+            east = "华东",
+            west = "西部",
+            categoryA = "类别 A",
+            categoryB = "类别 B",
+        )
+        private val pivotTexts: Translations<PivotTexts> = texts(
+            Langs.EN to pivotEnglish,
+            Langs.ZH_HANS to pivotChinese,
+        )
+    }
 }

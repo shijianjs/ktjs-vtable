@@ -25,33 +25,6 @@ import web.cssom.px
 import web.html.HTMLElement
 import web.html.HtmlTagName
 
-private val groupEnglish: GroupTexts = GroupTexts(
-    title = "Grouped header",
-    summary = "Columns nest: a group header holds the quarterly score columns underneath it, and hovering a " +
-        "cell highlights its whole group.",
-    tableHeading = "Nested columns",
-    hint = "Q1–Q3 sit under the first half-year header, Q4–Q5 under the second: `groupColumn(title, …)` is " +
-        "the whole API.",
-    colName = "Name",
-    halfOne = "2025 H1",
-    halfTwo = "2025 H2",
-)
-
-private val groupChinese: GroupTexts = GroupTexts(
-    title = "分组表头",
-    summary = "列可以嵌套：一个分组表头下面挂若干季度分数列，鼠标停在单元格上时整组一起高亮。",
-    tableHeading = "嵌套的列",
-    hint = "Q1–Q3 挂在上半年表头下，Q4–Q5 挂在下半年：`groupColumn(title, …)` 就是全部 API。",
-    colName = "姓名",
-    halfOne = "2025 上半年",
-    halfTwo = "2025 下半年",
-)
-
-private val groupTexts: Translations<GroupTexts> = texts(
-    Langs.EN to groupEnglish,
-    Langs.ZH_HANS to groupChinese,
-)
-
 /**
  * The grouped-header table: two group headers, five score columns below them.
  */
@@ -125,5 +98,31 @@ internal class GroupPage : DemoPage() {
         createOnceMounted()
     }
 
-    companion object : CustomElementReferenceAdapter<GroupPage>(GroupPage::class.js, "vtable-group-page")
+    companion object : CustomElementReferenceAdapter<GroupPage>(GroupPage::class.js, "vtable-group-page") {
+
+        private val groupEnglish: GroupTexts = GroupTexts(
+            title = "Grouped header",
+            summary = "Columns nest: a group header holds the quarterly score columns underneath it, and hovering a " +
+                "cell highlights its whole group.",
+            tableHeading = "Nested columns",
+            hint = "Q1–Q3 sit under the first half-year header, Q4–Q5 under the second: `groupColumn(title, …)` is " +
+                "the whole API.",
+            colName = "Name",
+            halfOne = "2025 H1",
+            halfTwo = "2025 H2",
+        )
+        private val groupChinese: GroupTexts = GroupTexts(
+            title = "分组表头",
+            summary = "列可以嵌套：一个分组表头下面挂若干季度分数列，鼠标停在单元格上时整组一起高亮。",
+            tableHeading = "嵌套的列",
+            hint = "Q1–Q3 挂在上半年表头下，Q4–Q5 挂在下半年：`groupColumn(title, …)` 就是全部 API。",
+            colName = "姓名",
+            halfOne = "2025 上半年",
+            halfTwo = "2025 下半年",
+        )
+        private val groupTexts: Translations<GroupTexts> = texts(
+            Langs.EN to groupEnglish,
+            Langs.ZH_HANS to groupChinese,
+        )
+    }
 }

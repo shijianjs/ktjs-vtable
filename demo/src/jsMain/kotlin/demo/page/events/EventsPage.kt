@@ -28,36 +28,6 @@ import web.cssom.px
 import web.html.HTMLElement
 import web.html.HtmlTagName
 
-private val eventsEnglish: EventsTexts = EventsTexts(
-    title = "Events",
-    summary = "Table events arrive as plain JavaScript arguments: `table.on(\"click_cell\") { args -> … }` " +
-        "hands over the coordinates of the cell that was clicked.",
-    tableHeading = "Click a cell",
-    hint = "Click any cell: the log below keeps the six newest clicks, newest last.",
-    colName = "Name",
-    colCity = "City",
-    colScore = "Score",
-    placeholder = "No clicks yet.",
-    hit = "click_cell row {row} col {col}",
-)
-
-private val eventsChinese: EventsTexts = EventsTexts(
-    title = "事件",
-    summary = "表格事件以普通 JavaScript 参数传入：`table.on(\"click_cell\") { args -> … }` 给出被点击单元格的坐标。",
-    tableHeading = "点一下单元格",
-    hint = "点击任意单元格：下面的日志保留最近六次点击，最新的在最后。",
-    colName = "姓名",
-    colCity = "城市",
-    colScore = "得分",
-    placeholder = "还没有点击。",
-    hit = "click_cell 行 {row} 列 {col}",
-)
-
-private val eventsTexts: Translations<EventsTexts> = texts(
-    Langs.EN to eventsEnglish,
-    Langs.ZH_HANS to eventsChinese,
-)
-
 /** The upstream event payload: only the coordinates this page prints are typed. */
 private external interface ClickedCell {
     var row: Double
@@ -140,5 +110,34 @@ internal class EventsPage : DemoPage() {
         createOnceMounted()
     }
 
-    companion object : CustomElementReferenceAdapter<EventsPage>(EventsPage::class.js, "vtable-events-page")
+    companion object : CustomElementReferenceAdapter<EventsPage>(EventsPage::class.js, "vtable-events-page") {
+
+        private val eventsEnglish: EventsTexts = EventsTexts(
+            title = "Events",
+            summary = "Table events arrive as plain JavaScript arguments: `table.on(\"click_cell\") { args -> … }` " +
+                "hands over the coordinates of the cell that was clicked.",
+            tableHeading = "Click a cell",
+            hint = "Click any cell: the log below keeps the six newest clicks, newest last.",
+            colName = "Name",
+            colCity = "City",
+            colScore = "Score",
+            placeholder = "No clicks yet.",
+            hit = "click_cell row {row} col {col}",
+        )
+        private val eventsChinese: EventsTexts = EventsTexts(
+            title = "事件",
+            summary = "表格事件以普通 JavaScript 参数传入：`table.on(\"click_cell\") { args -> … }` 给出被点击单元格的坐标。",
+            tableHeading = "点一下单元格",
+            hint = "点击任意单元格：下面的日志保留最近六次点击，最新的在最后。",
+            colName = "姓名",
+            colCity = "城市",
+            colScore = "得分",
+            placeholder = "还没有点击。",
+            hit = "click_cell 行 {row} 列 {col}",
+        )
+        private val eventsTexts: Translations<EventsTexts> = texts(
+            Langs.EN to eventsEnglish,
+            Langs.ZH_HANS to eventsChinese,
+        )
+    }
 }

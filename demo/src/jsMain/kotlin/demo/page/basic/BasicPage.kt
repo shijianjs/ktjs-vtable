@@ -25,35 +25,6 @@ import web.cssom.px
 import web.html.HTMLElement
 import web.html.HtmlTagName
 
-private val basicEnglish: BasicTexts = BasicTexts(
-    title = "Basic table",
-    summary = "Four text columns, one frozen column, adaptive width — everything built with the hand-written " +
-        "DSL on top of the generated declarations.",
-    tableHeading = "List table",
-    hint = "Drag the header edge to resize a column; the first column is frozen, so it stays while the rest " +
-        "scrolls sideways.",
-    colName = "Name",
-    colRole = "Role",
-    colCity = "City",
-    colScore = "Score",
-)
-
-private val basicChinese: BasicTexts = BasicTexts(
-    title = "基础表格",
-    summary = "四个文本列、一列冻结、宽度自适应 —— 全部用生成声明之上的手写 DSL 构造。",
-    tableHeading = "列表",
-    hint = "拖动表头边缘可以改列宽；第一列冻结，横向滚动时它不动。",
-    colName = "姓名",
-    colRole = "方向",
-    colCity = "城市",
-    colScore = "得分",
-)
-
-private val basicTexts: Translations<BasicTexts> = texts(
-    Langs.EN to basicEnglish,
-    Langs.ZH_HANS to basicChinese,
-)
-
 /**
  * The basic list table.
  *
@@ -124,5 +95,33 @@ internal class BasicPage : DemoPage() {
         createOnceMounted()
     }
 
-    companion object : CustomElementReferenceAdapter<BasicPage>(BasicPage::class.js, "vtable-basic-page")
+    companion object : CustomElementReferenceAdapter<BasicPage>(BasicPage::class.js, "vtable-basic-page") {
+
+        private val basicEnglish: BasicTexts = BasicTexts(
+            title = "Basic table",
+            summary = "Four text columns, one frozen column, adaptive width — everything built with the hand-written " +
+                "DSL on top of the generated declarations.",
+            tableHeading = "List table",
+            hint = "Drag the header edge to resize a column; the first column is frozen, so it stays while the rest " +
+                "scrolls sideways.",
+            colName = "Name",
+            colRole = "Role",
+            colCity = "City",
+            colScore = "Score",
+        )
+        private val basicChinese: BasicTexts = BasicTexts(
+            title = "基础表格",
+            summary = "四个文本列、一列冻结、宽度自适应 —— 全部用生成声明之上的手写 DSL 构造。",
+            tableHeading = "列表",
+            hint = "拖动表头边缘可以改列宽；第一列冻结，横向滚动时它不动。",
+            colName = "姓名",
+            colRole = "方向",
+            colCity = "城市",
+            colScore = "得分",
+        )
+        private val basicTexts: Translations<BasicTexts> = texts(
+            Langs.EN to basicEnglish,
+            Langs.ZH_HANS to basicChinese,
+        )
+    }
 }
