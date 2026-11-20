@@ -24,22 +24,6 @@ import web.cssom.px
 import web.html.HTMLElement
 import web.html.HtmlTagName
 
-/** Every string this page shows, in one language. */
-private class PivotTexts(
-    val title: String,
-    val summary: String,
-    val tableHeading: String,
-    val hint: String,
-    val dimRegion: String,
-    val dimCategory: String,
-    val indSales: String,
-    val indProfit: String,
-    val east: String,
-    val west: String,
-    val categoryA: String,
-    val categoryB: String,
-)
-
 private val pivotEnglish: PivotTexts = PivotTexts(
     title = "Pivot table",
     summary = "Rows and columns are dimensions, indicators are aggregated values: the same flat records " +
@@ -106,7 +90,6 @@ internal class PivotPage : DemoPage() {
             height = 240.px
         }
     }
-
 
     init {
         val section = SectionBlock.NAME { show() }

@@ -25,17 +25,6 @@ import web.cssom.px
 import web.html.HTMLElement
 import web.html.HtmlTagName
 
-/** Every string this page shows, in one language. */
-private class GroupTexts(
-    val title: String,
-    val summary: String,
-    val tableHeading: String,
-    val hint: String,
-    val colName: String,
-    val halfOne: String,
-    val halfTwo: String,
-)
-
 private val groupEnglish: GroupTexts = GroupTexts(
     title = "Grouped header",
     summary = "Columns nest: a group header holds the quarterly score columns underneath it, and hovering a " +
@@ -80,7 +69,6 @@ internal class GroupPage : DemoPage() {
             height = 240.px
         }
     }
-
 
     init {
         val section = SectionBlock.NAME { show() }

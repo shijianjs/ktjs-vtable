@@ -21,7 +21,6 @@ import io.github.shijianjs.ktjs.vtable.StandardOrAdaptiveOrAutoWidths
 import io.github.shijianjs.ktjs.vtable.dsl.columns
 import io.github.shijianjs.ktjs.vtable.dsl.listTableOptions
 import io.github.shijianjs.ktjs.vtable.dsl.records
-import io.github.shijianjs.ktjs.vtable.dsl.row
 import io.github.shijianjs.ktjs.vtable.dsl.textColumn
 import io.github.shijianjs.ktjs.vtable.editor
 import kotlin.js.JsAny
@@ -30,17 +29,6 @@ import web.animations.requestAnimationFrame
 import web.cssom.px
 import web.html.HTMLElement
 import web.html.HtmlTagName
-
-/** Every string this page shows, in one language. */
-private class EditTexts(
-    val title: String,
-    val summary: String,
-    val tableHeading: String,
-    val hint: String,
-    val colName: String,
-    val colRole: String,
-    val colCity: String,
-)
 
 private val editEnglish: EditTexts = EditTexts(
     title = "Editable cells",
@@ -87,7 +75,6 @@ internal class EditPage : DemoPage() {
             height = 320.px
         }
     }
-
 
     init {
         val section = SectionBlock.NAME { show() }

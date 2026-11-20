@@ -20,7 +20,6 @@ import io.github.shijianjs.ktjs.vtable.BaseTable
 import io.github.shijianjs.ktjs.vtable.ITableThemeDefine
 import io.github.shijianjs.ktjs.vtable.ListTable
 import io.github.shijianjs.ktjs.vtable.StandardOrAdaptiveOrAutoWidths
-import io.github.shijianjs.ktjs.vtable.TableTheme
 import io.github.shijianjs.ktjs.vtable.dsl.VTable
 import io.github.shijianjs.ktjs.vtable.dsl.columns
 import io.github.shijianjs.ktjs.vtable.dsl.listTableOptions
@@ -33,19 +32,6 @@ import web.dom.clickEvent
 import web.events.addHandler
 import web.html.HTMLElement
 import web.html.HtmlTagName
-
-/** Every string this page shows, in one language. */
-private class ThemeTexts(
-    val title: String,
-    val summary: String,
-    val tableHeading: String,
-    val hint: String,
-    /** The button labels, in the order of [THEMES]. */
-    val labels: List<String>,
-    val colName: String,
-    val colRole: String,
-    val colScore: String,
-)
 
 private val themeEnglish: ThemeTexts = ThemeTexts(
     title = "Themes",
@@ -104,7 +90,6 @@ internal class ThemePage : DemoPage() {
     private val buttons: List<ButtonElement> = THEMES.map { name ->
         createButton { setAttribute("data-theme-action", name) }
     }
-
 
     init {
         val section = SectionBlock.NAME { show() }

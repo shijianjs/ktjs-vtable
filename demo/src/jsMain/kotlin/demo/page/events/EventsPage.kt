@@ -28,20 +28,6 @@ import web.cssom.px
 import web.html.HTMLElement
 import web.html.HtmlTagName
 
-/** Every string this page shows, in one language. */
-private class EventsTexts(
-    val title: String,
-    val summary: String,
-    val tableHeading: String,
-    val hint: String,
-    val colName: String,
-    val colCity: String,
-    val colScore: String,
-    val placeholder: String,
-    /** The log line's template: `{row}` and `{col}` are the click's coordinates. */
-    val hit: String,
-)
-
 private val eventsEnglish: EventsTexts = EventsTexts(
     title = "Events",
     summary = "Table events arrive as plain JavaScript arguments: `table.on(\"click_cell\") { args -> … }` " +
@@ -99,7 +85,6 @@ internal class EventsPage : DemoPage() {
     }
 
     private val log = EventLog.NAME { show(capacity = 6) }
-
 
     init {
         val section = SectionBlock.NAME { show() }

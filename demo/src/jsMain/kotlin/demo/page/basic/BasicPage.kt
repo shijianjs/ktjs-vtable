@@ -19,25 +19,11 @@ import io.github.shijianjs.ktjs.vtable.StandardOrAdaptiveOrAutoWidths
 import io.github.shijianjs.ktjs.vtable.dsl.columns
 import io.github.shijianjs.ktjs.vtable.dsl.listTableOptions
 import io.github.shijianjs.ktjs.vtable.dsl.records
-import io.github.shijianjs.ktjs.vtable.dsl.row
 import io.github.shijianjs.ktjs.vtable.dsl.textColumn
-import kotlin.js.JsAny
 import web.animations.requestAnimationFrame
 import web.cssom.px
 import web.html.HTMLElement
 import web.html.HtmlTagName
-
-/** Every string this page shows, in one language. */
-private class BasicTexts(
-    val title: String,
-    val summary: String,
-    val tableHeading: String,
-    val hint: String,
-    val colName: String,
-    val colRole: String,
-    val colCity: String,
-    val colScore: String,
-)
 
 private val basicEnglish: BasicTexts = BasicTexts(
     title = "Basic table",
@@ -91,7 +77,6 @@ internal class BasicPage : DemoPage() {
             height = 320.px
         }
     }
-
 
     init {
         val section = SectionBlock.NAME { show() }
