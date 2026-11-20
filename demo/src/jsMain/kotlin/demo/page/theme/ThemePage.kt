@@ -33,37 +33,6 @@ import web.events.addHandler
 import web.html.HTMLElement
 import web.html.HtmlTagName
 
-private val themeEnglish: ThemeTexts = ThemeTexts(
-    title = "Themes",
-    summary = "Themes are tables of design tokens: the built-in ones ship with the package and the wrapper " +
-        "resolves them by name.",
-    tableHeading = "Design tokens",
-    hint = "Pick a theme: the table is rebuilt with that theme's tokens; the rows stay the same.",
-    labels = listOf("Default", "Dark", "Bright"),
-    colName = "Name",
-    colRole = "Role",
-    colScore = "Score",
-)
-
-private val themeChinese: ThemeTexts = ThemeTexts(
-    title = "主题",
-    summary = "主题是一组设计变量；内置主题随包发布，封装层按名字取用。",
-    tableHeading = "设计变量",
-    hint = "选一个主题：表格会用该主题的设计变量重建，行数据不变。",
-    labels = listOf("默认", "深色", "明亮"),
-    colName = "姓名",
-    colRole = "方向",
-    colScore = "得分",
-)
-
-private val themeTexts: Translations<ThemeTexts> = texts(
-    Langs.EN to themeEnglish,
-    Langs.ZH_HANS to themeChinese,
-)
-
-/** The upstream theme names, in the order of the toolbar buttons. */
-private val THEMES: List<String> = listOf("default", "dark", "bright")
-
 /**
  * The themes page: one table, three built-in themes, rebuilt on demand.
  */
@@ -154,5 +123,33 @@ internal class ThemePage : DemoPage() {
         createOnceMounted()
     }
 
-    companion object : CustomElementReferenceAdapter<ThemePage>(ThemePage::class.js, "vtable-theme-page")
+    companion object : CustomElementReferenceAdapter<ThemePage>(ThemePage::class.js, "vtable-theme-page") {
+        private val themeEnglish: ThemeTexts = ThemeTexts(
+            title = "Themes",
+            summary = "Themes are tables of design tokens: the built-in ones ship with the package and the wrapper " +
+                "resolves them by name.",
+            tableHeading = "Design tokens",
+            hint = "Pick a theme: the table is rebuilt with that theme's tokens; the rows stay the same.",
+            labels = listOf("Default", "Dark", "Bright"),
+            colName = "Name",
+            colRole = "Role",
+            colScore = "Score",
+        )
+        private val themeChinese: ThemeTexts = ThemeTexts(
+            title = "主题",
+            summary = "主题是一组设计变量；内置主题随包发布，封装层按名字取用。",
+            tableHeading = "设计变量",
+            hint = "选一个主题：表格会用该主题的设计变量重建，行数据不变。",
+            labels = listOf("默认", "深色", "明亮"),
+            colName = "姓名",
+            colRole = "方向",
+            colScore = "得分",
+        )
+        private val themeTexts: Translations<ThemeTexts> = texts(
+            Langs.EN to themeEnglish,
+            Langs.ZH_HANS to themeChinese,
+        )
+        /** The upstream theme names, in the order of the toolbar buttons. */
+        private val THEMES: List<String> = listOf("default", "dark", "bright")
+    }
 }
