@@ -575,7 +575,7 @@ klibs.io 从 Maven Central 与 GitHub 自动抓取，无需提交元数据文件
 - `demo` 只消费公共 API，不发布、也不进入 Dokka。根 `build.gradle.kts` 的发布与 Dokka 配置按
   `ktjs-vtable-` 前缀过滤子模块，新增非发布模块时沿用该约定。
 - 演示页的外壳（`.brandAssets` 拷贝 logo / Lumo 样式、导航、语言与外观菜单、面包屑）来自
-  `ktjs-demo-kit`，本仓库只写内容：`demo/src/jsMain/kotlin/demo/` 下的 `Main.kt`（`DemoLayout.define()` +
+  `ktjs-demo-kit`，本仓库只写内容：`demo/src/jsMain/kotlin/demo/` 下的 `Main.kt`（`DemoLayout.NAME` +
   `LayoutConfig`）、`SiteMenu.kt`（分组与页面路由）、`SiteTexts.kt`（外壳文案），页面在 `page/<组>/` 里。
   `entry` 不再带图标：菜单只有最外层与分组行有图标，子菜单的图标由 kit 忽略。
 - `demo/build.gradle.kts` 的 `jsMain.dependencies` 里是 `ktjs-demo-kit` / `ktjs-vaadin-web-components` /
