@@ -105,7 +105,7 @@ internal class EventsPage : DemoPage() {
 
     init {
         val section = sectionBlock()
-        texts.bind(section.title, { it.tableHeading })
+        texts.bind(section.heading, { it.tableHeading })
         texts.bind(section.hint, { it.hint })
         section.body.append(exampleBox(null, host), log.root)
         body.append(section.root)

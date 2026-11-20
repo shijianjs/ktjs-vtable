@@ -112,7 +112,7 @@ internal class PivotPage : DemoPage() {
 
     init {
         val section = sectionBlock()
-        texts.bind(section.title, { it.tableHeading })
+        texts.bind(section.heading, { it.tableHeading })
         texts.bind(section.hint, { it.hint })
         section.body.append(exampleBox(null, host))
         body.append(section.root)
