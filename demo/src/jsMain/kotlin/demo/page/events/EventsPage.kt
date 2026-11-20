@@ -11,7 +11,7 @@ import io.github.shijianjs.ktjs.demo.i18n.Lang
 import io.github.shijianjs.ktjs.demo.i18n.Langs
 import io.github.shijianjs.ktjs.demo.i18n.Translations
 import io.github.shijianjs.ktjs.demo.i18n.texts
-import io.github.shijianjs.ktjs.demo.page.EventLog
+import io.github.shijianjs.ktjs.demo.page.newEventLog
 import io.github.shijianjs.ktjs.demo.page.exampleBox
 import io.github.shijianjs.ktjs.demo.page.sectionBlock
 import io.github.shijianjs.ktjs.dom.element.inlineStyle
@@ -100,7 +100,7 @@ internal class EventsPage : DemoPage() {
         }
     }
 
-    private val log = EventLog(capacity = 6)
+    private val log = newEventLog(capacity = 6)
 
 
     init {
