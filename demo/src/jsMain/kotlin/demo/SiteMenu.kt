@@ -1,15 +1,16 @@
 package demo
 
-import demo.page.basic.newBasicPage
-import demo.page.edit.newEditPage
-import demo.page.events.newEventsPage
-import demo.page.group.newGroupPage
-import demo.page.overview.newOverviewPage
-import demo.page.pivot.newPivotPage
-import demo.page.theme.newThemePage
+import demo.page.basic.BasicPage
+import demo.page.edit.EditPage
+import demo.page.events.EventsPage
+import demo.page.group.GroupPage
+import demo.page.overview.OverviewPage
+import demo.page.pivot.PivotPage
+import demo.page.theme.ThemePage
 import io.github.shijianjs.ktjs.demo.nav.DemoMenu
 import io.github.shijianjs.ktjs.demo.nav.Entry
 import io.github.shijianjs.ktjs.demo.nav.Group
+import io.github.shijianjs.ktjs.dom.element.invoke
 
 /** The VTable version this demo is built against; the navbar shows it under the site name. */
 const val SITE_VERSION: String = "1.26.8"
@@ -36,12 +37,12 @@ internal val INTERACTION: Group = Group("interaction", "lucide:mouse-pointer-cli
  */
 fun siteMenu(): DemoMenu = DemoMenu(
     listOf(
-        Entry("overview", START) { newOverviewPage() },
-        Entry("basic", TABLES) { newBasicPage() },
-        Entry("group", TABLES) { newGroupPage() },
-        Entry("pivot", TABLES) { newPivotPage() },
-        Entry("edit", INTERACTION) { newEditPage() },
-        Entry("theme", INTERACTION) { newThemePage() },
-        Entry("events", INTERACTION) { newEventsPage() },
+        Entry("overview", START) { OverviewPage.NAME() },
+        Entry("basic", TABLES) { BasicPage.NAME() },
+        Entry("group", TABLES) { GroupPage.NAME() },
+        Entry("pivot", TABLES) { PivotPage.NAME() },
+        Entry("edit", INTERACTION) { EditPage.NAME() },
+        Entry("theme", INTERACTION) { ThemePage.NAME() },
+        Entry("events", INTERACTION) { EventsPage.NAME() },
     ),
 )

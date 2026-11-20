@@ -1,9 +1,6 @@
 package demo.page.overview
 
 import io.github.shijianjs.ktjs.demo.page.DemoPage
-import io.github.shijianjs.ktjs.dom.webcomponent.defineIfMissing
-import web.components.CustomElementReference
-import web.dom.TagName
 import demo.API_URL
 import demo.DOCS_URL
 import demo.SOURCE_URL
@@ -12,13 +9,14 @@ import io.github.shijianjs.ktjs.demo.i18n.Lang
 import io.github.shijianjs.ktjs.demo.i18n.Langs
 import io.github.shijianjs.ktjs.demo.i18n.Translations
 import io.github.shijianjs.ktjs.demo.i18n.texts
-import io.github.shijianjs.ktjs.demo.page.anchor
-import io.github.shijianjs.ktjs.demo.page.codeText
-import io.github.shijianjs.ktjs.demo.page.paragraph
-import io.github.shijianjs.ktjs.demo.page.row
-import io.github.shijianjs.ktjs.demo.page.sectionBlock
+import io.github.shijianjs.ktjs.demo.page.Blocks.anchor
+import io.github.shijianjs.ktjs.demo.page.Blocks.codeText
+import io.github.shijianjs.ktjs.demo.page.Blocks.paragraph
+import io.github.shijianjs.ktjs.demo.page.Blocks.row
+import io.github.shijianjs.ktjs.demo.page.SectionBlock
 import io.github.shijianjs.ktjs.dom.element.invoke
 import io.github.shijianjs.ktjs.dom.element.unaryPlus
+import io.github.shijianjs.ktjs.dom.webcomponent.CustomElementReferenceAdapter
 import web.html.HtmlTagName
 
 /** Every string this page shows, in one language. */
@@ -104,7 +102,7 @@ internal class OverviewPage : DemoPage() {
         addLink(texts.bind(anchor("", API_URL, external = true), { it.apiLink }))
         addLink(texts.bind(anchor("", SOURCE_URL, external = true), { it.sourceLink }))
 
-        val purpose = sectionBlock()
+        val purpose = SectionBlock.NAME { show() }
         texts.bind(purpose.heading, { it.purposeHeading })
         // One bound <li> per bullet, so a language switch rewrites each line in place.
         val bullets = HtmlTagName.ul {
@@ -112,14 +110,14 @@ internal class OverviewPage : DemoPage() {
         }
         purpose.body.append(texts.bind(paragraph(), { it.body }), bullets)
 
-        val options = sectionBlock()
+        val options = SectionBlock.NAME { show() }
         texts.bind(options.heading, { it.optionsHeading })
         options.body.append(
             texts.bind(paragraph(), { it.optionsBody }),
             row(codeText("listTableOptions { columns(textColumn(\"name\", \"Name\", 150.0)) }")),
         )
 
-        val next = sectionBlock()
+        val next = SectionBlock.NAME { show() }
         texts.bind(next.heading, { it.nextHeading })
         next.body.append(texts.bind(paragraph(), { it.nextBody }))
 
@@ -133,17 +131,5 @@ internal class OverviewPage : DemoPage() {
         texts.apply(lang)
     }
 
-    companion object : CustomElementReference<OverviewPage>(OverviewPage::class.js) {
-        val NAME: TagName<OverviewPage> = TagName("vtable-overview-page")
-
-        fun define() {
-            defineIfMissing(NAME, this)
-        }
-    }
-}
-
-/** Creates a defined `<vtable-overview-page>`. */
-internal fun newOverviewPage(): OverviewPage {
-    OverviewPage.define()
-    return OverviewPage.NAME()
+    companion object : CustomElementReferenceAdapter<OverviewPage>(OverviewPage::class.js, "vtable-overview-page")
 }

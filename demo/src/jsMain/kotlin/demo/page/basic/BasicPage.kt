@@ -1,9 +1,6 @@
 package demo.page.basic
 
 import io.github.shijianjs.ktjs.demo.page.DemoPage
-import io.github.shijianjs.ktjs.dom.webcomponent.defineIfMissing
-import web.components.CustomElementReference
-import web.dom.TagName
 import demo.page.samples.people
 import demo.page.samples.toRecords
 import io.github.shijianjs.ktjs.demo.i18n.Binder
@@ -11,10 +8,11 @@ import io.github.shijianjs.ktjs.demo.i18n.Lang
 import io.github.shijianjs.ktjs.demo.i18n.Langs
 import io.github.shijianjs.ktjs.demo.i18n.Translations
 import io.github.shijianjs.ktjs.demo.i18n.texts
-import io.github.shijianjs.ktjs.demo.page.exampleBox
-import io.github.shijianjs.ktjs.demo.page.sectionBlock
+import io.github.shijianjs.ktjs.demo.page.Blocks.exampleBox
+import io.github.shijianjs.ktjs.demo.page.SectionBlock
 import io.github.shijianjs.ktjs.dom.element.inlineStyle
 import io.github.shijianjs.ktjs.dom.element.invoke
+import io.github.shijianjs.ktjs.dom.webcomponent.CustomElementReferenceAdapter
 import io.github.shijianjs.ktjs.vtable.BaseTable
 import io.github.shijianjs.ktjs.vtable.ListTable
 import io.github.shijianjs.ktjs.vtable.StandardOrAdaptiveOrAutoWidths
@@ -96,7 +94,7 @@ internal class BasicPage : DemoPage() {
 
 
     init {
-        val section = sectionBlock()
+        val section = SectionBlock.NAME { show() }
         texts.bind(section.heading, { it.tableHeading })
         texts.bind(section.hint, { it.hint })
         section.body.append(exampleBox(null, host))
@@ -141,17 +139,5 @@ internal class BasicPage : DemoPage() {
         createOnceMounted()
     }
 
-    companion object : CustomElementReference<BasicPage>(BasicPage::class.js) {
-        val NAME: TagName<BasicPage> = TagName("vtable-basic-page")
-
-        fun define() {
-            defineIfMissing(NAME, this)
-        }
-    }
-}
-
-/** Creates a defined `<vtable-basic-page>`. */
-internal fun newBasicPage(): BasicPage {
-    BasicPage.define()
-    return BasicPage.NAME()
+    companion object : CustomElementReferenceAdapter<BasicPage>(BasicPage::class.js, "vtable-basic-page")
 }

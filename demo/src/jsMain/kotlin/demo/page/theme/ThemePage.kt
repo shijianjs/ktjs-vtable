@@ -1,9 +1,6 @@
 package demo.page.theme
 
 import io.github.shijianjs.ktjs.demo.page.DemoPage
-import io.github.shijianjs.ktjs.dom.webcomponent.defineIfMissing
-import web.components.CustomElementReference
-import web.dom.TagName
 import demo.page.samples.people
 import demo.page.samples.toRecords
 import io.github.shijianjs.ktjs.demo.i18n.Binder
@@ -11,11 +8,12 @@ import io.github.shijianjs.ktjs.demo.i18n.Lang
 import io.github.shijianjs.ktjs.demo.i18n.Langs
 import io.github.shijianjs.ktjs.demo.i18n.Translations
 import io.github.shijianjs.ktjs.demo.i18n.texts
-import io.github.shijianjs.ktjs.demo.page.exampleBox
-import io.github.shijianjs.ktjs.demo.page.row
-import io.github.shijianjs.ktjs.demo.page.sectionBlock
+import io.github.shijianjs.ktjs.demo.page.Blocks.exampleBox
+import io.github.shijianjs.ktjs.demo.page.Blocks.row
+import io.github.shijianjs.ktjs.demo.page.SectionBlock
 import io.github.shijianjs.ktjs.dom.element.inlineStyle
 import io.github.shijianjs.ktjs.dom.element.invoke
+import io.github.shijianjs.ktjs.dom.webcomponent.CustomElementReferenceAdapter
 import io.github.shijianjs.ktjs.vaadin.button.ButtonElement
 import io.github.shijianjs.ktjs.vaadin.button.createButton
 import io.github.shijianjs.ktjs.vtable.BaseTable
@@ -109,7 +107,7 @@ internal class ThemePage : DemoPage() {
 
 
     init {
-        val section = sectionBlock()
+        val section = SectionBlock.NAME { show() }
         texts.bind(section.heading, { it.tableHeading })
         texts.bind(section.hint, { it.hint })
         section.body.append(
@@ -171,17 +169,5 @@ internal class ThemePage : DemoPage() {
         createOnceMounted()
     }
 
-    companion object : CustomElementReference<ThemePage>(ThemePage::class.js) {
-        val NAME: TagName<ThemePage> = TagName("vtable-theme-page")
-
-        fun define() {
-            defineIfMissing(NAME, this)
-        }
-    }
-}
-
-/** Creates a defined `<vtable-theme-page>`. */
-internal fun newThemePage(): ThemePage {
-    ThemePage.define()
-    return ThemePage.NAME()
+    companion object : CustomElementReferenceAdapter<ThemePage>(ThemePage::class.js, "vtable-theme-page")
 }

@@ -1,9 +1,6 @@
 package demo.page.events
 
 import io.github.shijianjs.ktjs.demo.page.DemoPage
-import io.github.shijianjs.ktjs.dom.webcomponent.defineIfMissing
-import web.components.CustomElementReference
-import web.dom.TagName
 import demo.page.samples.people
 import demo.page.samples.toRecords
 import io.github.shijianjs.ktjs.demo.i18n.Binder
@@ -11,11 +8,12 @@ import io.github.shijianjs.ktjs.demo.i18n.Lang
 import io.github.shijianjs.ktjs.demo.i18n.Langs
 import io.github.shijianjs.ktjs.demo.i18n.Translations
 import io.github.shijianjs.ktjs.demo.i18n.texts
-import io.github.shijianjs.ktjs.demo.page.newEventLog
-import io.github.shijianjs.ktjs.demo.page.exampleBox
-import io.github.shijianjs.ktjs.demo.page.sectionBlock
+import io.github.shijianjs.ktjs.demo.page.Blocks.exampleBox
+import io.github.shijianjs.ktjs.demo.page.SectionBlock
+import io.github.shijianjs.ktjs.demo.page.EventLog
 import io.github.shijianjs.ktjs.dom.element.inlineStyle
 import io.github.shijianjs.ktjs.dom.element.invoke
+import io.github.shijianjs.ktjs.dom.webcomponent.CustomElementReferenceAdapter
 import io.github.shijianjs.ktjs.vtable.BaseTable
 import io.github.shijianjs.ktjs.vtable.ListTable
 import io.github.shijianjs.ktjs.vtable.StandardOrAdaptiveOrAutoWidths
@@ -100,11 +98,11 @@ internal class EventsPage : DemoPage() {
         }
     }
 
-    private val log = newEventLog(capacity = 6)
+    private val log = EventLog.NAME { show(capacity = 6) }
 
 
     init {
-        val section = sectionBlock()
+        val section = SectionBlock.NAME { show() }
         texts.bind(section.heading, { it.tableHeading })
         texts.bind(section.hint, { it.hint })
         section.body.append(exampleBox(null, host), log.root)
@@ -157,17 +155,5 @@ internal class EventsPage : DemoPage() {
         createOnceMounted()
     }
 
-    companion object : CustomElementReference<EventsPage>(EventsPage::class.js) {
-        val NAME: TagName<EventsPage> = TagName("vtable-events-page")
-
-        fun define() {
-            defineIfMissing(NAME, this)
-        }
-    }
-}
-
-/** Creates a defined `<vtable-events-page>`. */
-internal fun newEventsPage(): EventsPage {
-    EventsPage.define()
-    return EventsPage.NAME()
+    companion object : CustomElementReferenceAdapter<EventsPage>(EventsPage::class.js, "vtable-events-page")
 }

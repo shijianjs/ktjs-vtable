@@ -1,18 +1,16 @@
 package demo.page.pivot
 
 import io.github.shijianjs.ktjs.demo.page.DemoPage
-import io.github.shijianjs.ktjs.dom.webcomponent.defineIfMissing
-import web.components.CustomElementReference
-import web.dom.TagName
 import io.github.shijianjs.ktjs.demo.i18n.Binder
 import io.github.shijianjs.ktjs.demo.i18n.Lang
 import io.github.shijianjs.ktjs.demo.i18n.Langs
 import io.github.shijianjs.ktjs.demo.i18n.Translations
 import io.github.shijianjs.ktjs.demo.i18n.texts
-import io.github.shijianjs.ktjs.demo.page.exampleBox
-import io.github.shijianjs.ktjs.demo.page.sectionBlock
+import io.github.shijianjs.ktjs.demo.page.Blocks.exampleBox
+import io.github.shijianjs.ktjs.demo.page.SectionBlock
 import io.github.shijianjs.ktjs.dom.element.inlineStyle
 import io.github.shijianjs.ktjs.dom.element.invoke
+import io.github.shijianjs.ktjs.dom.webcomponent.CustomElementReferenceAdapter
 import io.github.shijianjs.ktjs.vtable.BaseTable
 import io.github.shijianjs.ktjs.vtable.PivotTable
 import io.github.shijianjs.ktjs.vtable.StandardOrAdaptiveOrAutoWidths
@@ -111,7 +109,7 @@ internal class PivotPage : DemoPage() {
 
 
     init {
-        val section = sectionBlock()
+        val section = SectionBlock.NAME { show() }
         texts.bind(section.heading, { it.tableHeading })
         texts.bind(section.hint, { it.hint })
         section.body.append(exampleBox(null, host))
@@ -165,17 +163,5 @@ internal class PivotPage : DemoPage() {
         createOnceMounted()
     }
 
-    companion object : CustomElementReference<PivotPage>(PivotPage::class.js) {
-        val NAME: TagName<PivotPage> = TagName("vtable-pivot-page")
-
-        fun define() {
-            defineIfMissing(NAME, this)
-        }
-    }
-}
-
-/** Creates a defined `<vtable-pivot-page>`. */
-internal fun newPivotPage(): PivotPage {
-    PivotPage.define()
-    return PivotPage.NAME()
+    companion object : CustomElementReferenceAdapter<PivotPage>(PivotPage::class.js, "vtable-pivot-page")
 }
