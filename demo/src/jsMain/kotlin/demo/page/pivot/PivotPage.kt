@@ -10,7 +10,6 @@ import io.github.shijianjs.ktjs.demo.page.Blocks.exampleBox
 import io.github.shijianjs.ktjs.demo.page.SectionBlock
 import io.github.shijianjs.ktjs.dom.element.inlineStyle
 import io.github.shijianjs.ktjs.dom.element.invoke
-import io.github.shijianjs.ktjs.dom.webcomponent.CustomElementReferenceAdapter
 import io.github.shijianjs.ktjs.vtable.BaseTable
 import io.github.shijianjs.ktjs.vtable.PivotTable
 import io.github.shijianjs.ktjs.vtable.StandardOrAdaptiveOrAutoWidths
@@ -109,7 +108,7 @@ internal class PivotPage : DemoPage() {
         createOnceMounted()
     }
 
-    companion object : CustomElementReferenceAdapter<PivotPage>(PivotPage::class.js, "vtable-pivot-page") {
+    companion object : PivotPageDefaultReference() {
 
         private val pivotEnglish: PivotTexts = PivotTexts(
             title = "Pivot table",

@@ -16,7 +16,6 @@ import io.github.shijianjs.ktjs.demo.page.Blocks.row
 import io.github.shijianjs.ktjs.demo.page.SectionBlock
 import io.github.shijianjs.ktjs.dom.element.invoke
 import io.github.shijianjs.ktjs.dom.element.unaryPlus
-import io.github.shijianjs.ktjs.dom.webcomponent.CustomElementReferenceAdapter
 import web.html.HtmlTagName
 
 /**
@@ -60,7 +59,7 @@ internal class OverviewPage : DemoPage() {
         texts.apply(lang)
     }
 
-    companion object : CustomElementReferenceAdapter<OverviewPage>(OverviewPage::class.js, "vtable-overview-page") {
+    companion object : OverviewPageDefaultReference() {
 
         private val overviewEnglish: OverviewTexts = OverviewTexts(
             title = "Overview",

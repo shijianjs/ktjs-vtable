@@ -12,7 +12,6 @@ import io.github.shijianjs.ktjs.demo.page.Blocks.exampleBox
 import io.github.shijianjs.ktjs.demo.page.SectionBlock
 import io.github.shijianjs.ktjs.dom.element.inlineStyle
 import io.github.shijianjs.ktjs.dom.element.invoke
-import io.github.shijianjs.ktjs.dom.webcomponent.CustomElementReferenceAdapter
 import io.github.shijianjs.ktjs.vtable.BaseTable
 import io.github.shijianjs.ktjs.vtable.IEditor
 import io.github.shijianjs.ktjs.vtable.InputEditor
@@ -99,7 +98,7 @@ internal class EditPage : DemoPage() {
         createOnceMounted()
     }
 
-    companion object : CustomElementReferenceAdapter<EditPage>(EditPage::class.js, "vtable-edit-page") {
+    companion object : EditPageDefaultReference() {
 
         private val editEnglish: EditTexts = EditTexts(
             title = "Editable cells",

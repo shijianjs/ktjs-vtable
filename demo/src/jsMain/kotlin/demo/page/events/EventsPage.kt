@@ -13,7 +13,6 @@ import io.github.shijianjs.ktjs.demo.page.SectionBlock
 import io.github.shijianjs.ktjs.demo.page.EventLog
 import io.github.shijianjs.ktjs.dom.element.inlineStyle
 import io.github.shijianjs.ktjs.dom.element.invoke
-import io.github.shijianjs.ktjs.dom.webcomponent.CustomElementReferenceAdapter
 import io.github.shijianjs.ktjs.vtable.BaseTable
 import io.github.shijianjs.ktjs.vtable.ListTable
 import io.github.shijianjs.ktjs.vtable.StandardOrAdaptiveOrAutoWidths
@@ -110,7 +109,7 @@ internal class EventsPage : DemoPage() {
         createOnceMounted()
     }
 
-    companion object : CustomElementReferenceAdapter<EventsPage>(EventsPage::class.js, "vtable-events-page") {
+    companion object : EventsPageDefaultReference() {
 
         private val eventsEnglish: EventsTexts = EventsTexts(
             title = "Events",

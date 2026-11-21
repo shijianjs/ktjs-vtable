@@ -13,7 +13,6 @@ import io.github.shijianjs.ktjs.demo.page.Blocks.row
 import io.github.shijianjs.ktjs.demo.page.SectionBlock
 import io.github.shijianjs.ktjs.dom.element.inlineStyle
 import io.github.shijianjs.ktjs.dom.element.invoke
-import io.github.shijianjs.ktjs.dom.webcomponent.CustomElementReferenceAdapter
 import io.github.shijianjs.ktjs.vaadin.button.ButtonElement
 import io.github.shijianjs.ktjs.vaadin.button.createButton
 import io.github.shijianjs.ktjs.vtable.BaseTable
@@ -123,7 +122,7 @@ internal class ThemePage : DemoPage() {
         createOnceMounted()
     }
 
-    companion object : CustomElementReferenceAdapter<ThemePage>(ThemePage::class.js, "vtable-theme-page") {
+    companion object : ThemePageDefaultReference() {
         private val themeEnglish: ThemeTexts = ThemeTexts(
             title = "Themes",
             summary = "Themes are tables of design tokens: the built-in ones ship with the package and the wrapper " +
