@@ -9,6 +9,16 @@ The scope is "the open-source packages of VTable", not a selection of features. 
 checklist; the live version with per-item details is
 [`docs/development/api-coverage.md`](https://github.com/shijianjs/ktjs-vtable/blob/main/docs/development/api-coverage.md).
 
+```mermaid
+flowchart LR
+    U["the @visactor/vtable family"] --> W["wrapped: vtable + vtable-editors<br/>one module, one Kotlin package"]
+    U --> P["pending: export / search / plugins<br/>gantt / sheet / calendar"]
+    U --> N["not planned: react / vue / openinula bindings"]
+    W --> M["io.github.shijianjs.ktjs.vtable<br/>444 reachable declarations, 138 files"]
+    P --> S["each enters the same way: .d.ts → generator → npm dependency → demo + test"]
+```
+
+
 ## Wrapped
 
 | Package | Kotlin home | Notes |

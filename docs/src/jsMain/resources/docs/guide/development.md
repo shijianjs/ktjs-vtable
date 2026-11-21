@@ -31,6 +31,19 @@ Current output: 444 reachable declarations, 277 exported names, 138 Kotlin files
 declarations that could not be expressed directly (index signatures, intersections, unresolved
 references) so the gap is visible instead of hidden.
 
+```mermaid
+flowchart LR
+    D1["the .d.ts tree of @visactor/vtable/es"] --> GEN["scripts/generate-api.py"]
+    D2["the .d.ts tree of @visactor/vtable-editors/es"] --> GEN
+    GEN --> KT["ktjs-vtable/src/jsMain/kotlin/…<br/>generated, never edited by hand"]
+    GEN --> REP["docs/development/api-surface-report.md"]
+    KT --> TEST["jsBrowserTest"]
+    HAND["dsl/VTableDsl.kt, the hand-written layer"] --> TEST
+    TEST --> E2E[":demo:e2eTest"]
+    E2E --> SITE["pagesSite"]
+```
+
+
 ## Rules the generator follows
 
 - One Kotlin file per upstream module, each with `@file:JsModule` pointing at the runtime `.js` path

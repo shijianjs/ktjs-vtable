@@ -29,6 +29,19 @@ python scripts/generate-api.py \
 当前产出：444 个可达声明、277 个导出名、138 个 Kotlin 文件。报告列出无法直接表达的声明（索引签名、
 交叉类型、未解析引用），让缺口是可见的而不是藏起来的。
 
+```mermaid
+flowchart LR
+    D1["node_modules/@visactor/vtable/es 的 .d.ts"] --> GEN["scripts/generate-api.py"]
+    D2["@visactor/vtable-editors/es 的 .d.ts"] --> GEN
+    GEN --> KT["ktjs-vtable/src/jsMain/kotlin/…<br/>生成目录，禁手改"]
+    GEN --> REP["docs/development/api-surface-report.md"]
+    KT --> TEST["jsBrowserTest"]
+    HAND["dsl/VTableDsl.kt 手写层"] --> TEST
+    TEST --> E2E[":demo:e2eTest"]
+    E2E --> SITE["pagesSite"]
+```
+
+
 ## 生成器遵循的规则
 
 - 每个上游模块一个 Kotlin 文件，`@file:JsModule` 指向运行时的 `.js` 路径

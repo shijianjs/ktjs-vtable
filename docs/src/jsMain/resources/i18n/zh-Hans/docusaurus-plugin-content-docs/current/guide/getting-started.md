@@ -69,6 +69,25 @@ fun main() {
   会在你传入的元素里自己追加 `<div>` 与 `<canvas>`。
 - **`ListTable(options)` 也可以**，前提是 options 里带了 `container`。演示页用的是两参数形式。
 
+```mermaid
+flowchart TD
+    A["implementation(io.github.shijianjs:ktjs-vtable)"] --> B["模块自己声明 @visactor/vtable<br/>与 @visactor/vtable-editors"]
+    B --> C["ListTable(container, listTableOptions { … })"]
+    C --> D["VTable 在容器里生成 div + canvas<br/>尺寸必须先由 CSS 给到容器"]
+    subgraph verify["三个各自独立的 task"]
+        E["jsBrowserTest"]
+        F[":demo:e2eTest"]
+        G[":docs:docusaurusBuild"]
+    end
+    D --> E
+    D --> F
+    D --> G
+    E --> H["pagesSite：/ 文档、/demo/ 演示、/api/ Dokka"]
+    F --> H
+    G --> H
+```
+
+
 ## 构建、测试、发布
 
 ```bash

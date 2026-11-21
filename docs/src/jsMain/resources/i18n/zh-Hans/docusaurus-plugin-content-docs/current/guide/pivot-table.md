@@ -8,6 +8,15 @@ title: 透视表
 `PivotTable` 把同一批平坦记录按行、列维度聚合。它的选项类型是 `PivotTableConstructorOptions`，
 `pivotTableOptions { }` 的用法与 `listTableOptions` 一致。
 
+```mermaid
+flowchart TD
+    R["records(row(region, category, sales))"] --> OPT["pivotTableOptions { rows / columns / indicators }"]
+    AGG["aggregationType：SUM / COUNT / AVG / …<br/>自定义聚合走 register"] --> OPT
+    OPT --> LIST["PivotTable(container, options)<br/>按行列维度聚合同一批记录"]
+    OPT --> CHART["PivotChart(container, options)<br/>indicator 带 chartSpec，是 VChart 自己的选项树"]
+```
+
+
 ## 维度与指标
 
 ```kotlin

@@ -5,6 +5,17 @@ title: 主题与编辑器
 
 # 主题与编辑器
 
+```mermaid
+flowchart LR
+    THEME["VTable.theme / themeOr / registerTheme"] --> OPT["options.theme"]
+    EDITOR["editor("input", InputEditor)"] --> OPT
+    COL["列上 editor = "input""] --> OPT
+    OPT --> TBL["ListTable / PivotTable"]
+    TBL --> EV["table.on("click_cell") 等上游事件名"]
+    EV --> CB["回调收到 JsAny 事件对象，按事件名 cast"]
+```
+
+
 ## 主题
 
 主题是一组作用到整张表的设计变量。上游自带五个命名主题——`DEFAULT`、`DARK`、`BRIGHT`、`ARCO`、

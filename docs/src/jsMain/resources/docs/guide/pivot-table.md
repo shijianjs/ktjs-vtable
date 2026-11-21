@@ -9,6 +9,15 @@ title: Pivot table
 `PivotTableConstructorOptions`, and `pivotTableOptions { }` builds it the same way
 `listTableOptions` builds the list options.
 
+```mermaid
+flowchart TD
+    R["records(row(region, category, sales))"] --> OPT["pivotTableOptions { rows / columns / indicators }"]
+    AGG["aggregationType: SUM / COUNT / AVG / …<br/>a custom aggregator is reachable through register"] --> OPT
+    OPT --> LIST["PivotTable(container, options)<br/>the same records, aggregated by dimensions"]
+    OPT --> CHART["PivotChart(container, options)<br/>each indicator carries a chartSpec, VChart's own option tree"]
+```
+
+
 ## Dimensions and indicators
 
 ```kotlin

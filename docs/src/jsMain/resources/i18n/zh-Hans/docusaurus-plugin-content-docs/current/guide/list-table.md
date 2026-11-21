@@ -34,6 +34,17 @@ DSL 补的只有这几项：
 | `records(vararg Any)` | `records` | 接收 `row(...)` 造出来的行 |
 | `row(vararg Pair<String, Any?>)` | 一条记录 | 键是列的 `field` 名 |
 
+```mermaid
+flowchart LR
+    COL["textColumn / linkColumn / checkboxColumn<br/>progressbarColumn / imageColumn"] --> OPT["listTableOptions { columns(…); records(…) }"]
+    GRP["groupColumn：一个表头下嵌套若干列"] --> COL
+    ROW["row(name to …, role to …)<br/>按列 field 取值的开放字典"] --> OPT
+    OPT --> UP["ListTableConstructorOptions<br/>（上游类型，原样交给 VTable）"]
+    ESC["DSL 没写的字段照旧可设<br/>lambda 里直接赋值 / unsafeJso"] --> UP
+    UP --> TBL["ListTable(container, options)"]
+```
+
+
 ## 列
 
 `textColumn`、`linkColumn`、`checkboxColumn`、`progressbarColumn`、`imageColumn` 的签名都是

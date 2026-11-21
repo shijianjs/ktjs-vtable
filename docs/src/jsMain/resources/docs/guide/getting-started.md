@@ -72,6 +72,25 @@ Two details matter:
 - **`ListTable(options)` also works** when the options object carries `container`. The two-argument form
   is the one the demo uses.
 
+```mermaid
+flowchart TD
+    A["implementation(io.github.shijianjs:ktjs-vtable)"] --> B["the module declares @visactor/vtable<br/>and @visactor/vtable-editors itself"]
+    B --> C["ListTable(container, listTableOptions { … })"]
+    C --> D["VTable appends its div + canvas<br/>inside the container, so the size must come from CSS"]
+    subgraph verify["three tasks, each run on its own"]
+        E["jsBrowserTest"]
+        F[":demo:e2eTest"]
+        G[":docs:docusaurusBuild"]
+    end
+    D --> E
+    D --> F
+    D --> G
+    E --> H["pagesSite: docs at /, demo at /demo/, Dokka at /api/"]
+    F --> H
+    G --> H
+```
+
+
 ## Build, test, publish
 
 ```bash

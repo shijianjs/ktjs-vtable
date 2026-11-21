@@ -8,6 +8,16 @@ title: 包覆盖
 范围是「VTable 的开源包」，不是挑几个功能。本页是清单；带逐项细节的版本在
 [`docs/development/api-coverage.md`](https://github.com/shijianjs/ktjs-vtable/blob/main/docs/development/api-coverage.md)。
 
+```mermaid
+flowchart LR
+    U["@visactor/vtable 生态"] --> W["已封装：vtable + vtable-editors<br/>同一个模块、同一个 Kotlin 包"]
+    U --> P["待完成：export / search / plugins<br/>gantt / sheet / calendar"]
+    U --> N["不做：react / vue / openinula 绑定"]
+    W --> M["io.github.shijianjs.ktjs.vtable<br/>444 条可达声明、138 个文件"]
+    P --> S["进入方式都一样：.d.ts → 生成器 → npm 依赖 → demo + 测试"]
+```
+
+
 ## 已封装
 
 | 包 | Kotlin 包 | 说明 |

@@ -34,6 +34,17 @@ declares is available inside the lambda, including the ones the DSL does not tou
 | `records(vararg Any)` | `records` | takes `row(...)` objects |
 | `row(vararg Pair<String, Any?>)` | one record | keys are column `field` names |
 
+```mermaid
+flowchart LR
+    COL["textColumn / linkColumn / checkboxColumn<br/>progressbarColumn / imageColumn"] --> OPT["listTableOptions { columns(…); records(…) }"]
+    GRP["groupColumn: one header over nested columns"] --> COL
+    ROW["row(name to …, role to …)<br/>an open dictionary keyed by the column field"] --> OPT
+    OPT --> UP["ListTableConstructorOptions<br/>the upstream type, handed to VTable as is"]
+    ESC["fields the DSL does not name stay settable<br/>assign in the lambda or build with unsafeJso"] --> UP
+    UP --> TBL["ListTable(container, options)"]
+```
+
+
 ## Columns
 
 `textColumn`, `linkColumn`, `checkboxColumn`, `progressbarColumn` and `imageColumn` all take

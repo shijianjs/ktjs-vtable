@@ -5,6 +5,17 @@ title: Themes and editors
 
 # Themes and editors
 
+```mermaid
+flowchart LR
+    THEME["VTable.theme / themeOr / registerTheme"] --> OPT["options.theme"]
+    EDITOR["editor('input', InputEditor)"] --> OPT
+    COL["editor = 'input' on a column"] --> OPT
+    OPT --> TBL["ListTable / PivotTable"]
+    TBL --> EV["table.on('click_cell') and the other upstream event names"]
+    EV --> CB["the callback receives one JsAny event object, cast by event name"]
+```
+
+
 ## Themes
 
 A theme is a set of design tokens applied to the whole table. The upstream package ships five named
