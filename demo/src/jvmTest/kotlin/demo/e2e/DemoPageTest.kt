@@ -24,7 +24,7 @@ class DemoPageTest {
 
         assertTrue(page.title().contains("ktjs-vtable"), "title: ${page.title()}")
         assertTrue(page.locator("img.layout__logo").isVisible(), "the shell shows the project logo")
-        assertEquals("Overview", page.locator("ktjs-demo-page h1").textContent())
+        assertEquals("Overview", page.locator("vtable-overview-page h1").textContent())
         assertTrue(
             page.locator("vaadin-side-nav-item[data-route='basic']").isVisible(),
             "the sidebar lists the table routes",
@@ -75,7 +75,7 @@ class DemoPageTest {
         page.locator("[data-action='lang:zh-Hans']").click()
 
         assertEquals("zh-Hans", page.locator("html").getAttribute("lang"))
-        assertEquals("主题", page.locator("ktjs-demo-page h1").textContent())
+        assertEquals("主题", page.locator("vtable-theme-page h1").textContent())
         assertEquals("深色", page.locator("[data-theme-action='dark']").textContent())
         assertEquals("基础表格", page.locator("vaadin-side-nav-item[data-route='basic']").textContent())
         // The headers are inside the canvas, so the table is rebuilt; the canvas is back a frame later.
