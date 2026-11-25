@@ -43,8 +43,8 @@ React / Vue / OpenInula 绑定明确不做。类型声明由上游自己的 `.d.
   Markdown，由 [ktjs-docusaurus](https://github.com/shijianjs/ktjs-docusaurus) 的 Gradle 插件组装并调用
   Docusaurus CLI。`pagesSite` 把它放在 Pages **根目录**，demo 在 `/demo/`、API 在 `/api/`：`baseUrl`
   （`/ktjs-vtable/`）和导航里那两个跳转都由 `Config.kt` 顶部的常量推出来，改布局要一起改。
-  不发布、也不进 Dokka。版本在 `gradle.properties`：`ktjs-docusaurus.version` 是 wrapper klib 的，
-  `ktjs-docusaurus-gradle-plugin.version` 是插件的，`ktjs-docusaurus-kit.version` 是工具箱的（那个项目每个
+  不发布、也不进 Dokka。版本在 `gradle/libs.versions.toml`：`ktjs-docusaurus` 是 wrapper klib 的，
+  `ktjs-docusaurus-gradle-plugin` 是插件的，`ktjs-docusaurus-kit` 是工具箱的（那个项目每个
   模块各有 `-kt.N` 修订号）；写 SNAPSHOT 时从 `mavenLocal` 解析。首页的 `<ktjs-hero>` / `<ktjs-features>` /
   `<ktjs-next-steps>` 来自工具箱：浏览器那一半不是独立 Maven 产物，而是 kit klib 里的
   `ktjs-client/ktjs-docusaurus-kit-browser.js`，`docs/build.gradle.kts` 用 `extractKitBundle` 从 klib
@@ -579,7 +579,7 @@ klibs.io 从 Maven Central 与 GitHub 自动抓取，无需提交元数据文件
   `LayoutConfig`）、`SiteMenu.kt`（分组与页面路由）、`SiteTexts.kt`（外壳文案），页面在 `page/<组>/` 里。
   `entry` 不再带图标：菜单只有最外层与分组行有图标，子菜单的图标由 kit 忽略。
 - `demo/build.gradle.kts` 的 `jsMain.dependencies` 里是 `ktjs-demo-kit` / `ktjs-vaadin-web-components` /
-  `ktjs-iconify-icon` 与 `:ktjs-vtable`；`gradle.properties` 只写 `*-SNAPSHOT`，不写成品版本号。
+  `ktjs-iconify-icon` 与 `:ktjs-vtable`；`gradle/libs.versions.toml` 只写 `*-SNAPSHOT`，不写成品版本号。
 - 页面：`newPage()` → `sectionBlock()` → `exampleBox(null, host)`，宿主是
   `<div data-table="basic" style="height:320px">`。**VTable 画 canvas**，构造时按宿主当时的尺寸建画布：
   宽度还是 0 时得到一张永远补不上来的空白且 console 不报错，所以每页都 `createOnceMounted()` 等
